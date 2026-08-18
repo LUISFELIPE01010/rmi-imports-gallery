@@ -70,6 +70,11 @@ export function ProductCard({ product, index }: { product: Product; index: numbe
         <span className="absolute left-3 top-3 z-10 rounded-full bg-ink/85 px-2 py-0.5 text-[8px] font-semibold uppercase tracking-[0.16em] text-gold sm:left-4 sm:top-4 sm:px-3 sm:py-1 sm:text-[9px] sm:tracking-[0.18em]">
           {categoryLabel[product.category]}
         </span>
+        {product.soldOut && (
+          <span className="absolute right-3 top-3 z-10 rounded-full bg-background/95 px-2 py-0.5 text-[8px] font-semibold uppercase tracking-[0.16em] text-foreground shadow-soft sm:right-4 sm:top-4 sm:px-3 sm:py-1 sm:text-[9px]">
+            Esgotado
+          </span>
+        )}
         <img
           src={product.image}
           alt={product.name}
@@ -79,7 +84,7 @@ export function ProductCard({ product, index }: { product: Product; index: numbe
           sizes="(max-width: 640px) 45vw, (max-width: 768px) 90vw, 320px"
           width={768}
           height={768}
-          className="h-full w-full object-cover transition-transform duration-[900ms] ease-out group-hover:scale-105"
+          className={`h-full w-full object-cover transition-transform duration-[900ms] ease-out group-hover:scale-105 ${product.soldOut ? "opacity-60 grayscale" : ""}`}
         />
       </div>
 
