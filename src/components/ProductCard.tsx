@@ -9,14 +9,11 @@ function WhatsAppIcon() {
   );
 }
 
-function Note({ symbol, label, value }: { symbol: string; label: string; value: string }) {
+function Note({ label, value }: { label: string; value: string }) {
   return (
-    <div className="flex items-start gap-2 text-[11px] leading-relaxed">
-      <span className="shrink-0 text-accent">{symbol}</span>
-      <span className="min-w-0">
-        <span className="font-medium uppercase tracking-[0.14em] text-foreground/60">{label}</span>{" "}
-        <span className="text-muted-foreground">{value}</span>
-      </span>
+    <div className="flex gap-2 text-[11px] leading-relaxed">
+      <span className="w-11 shrink-0 uppercase tracking-[0.12em] text-gold">{label}</span>
+      <span className="min-w-0 text-muted-foreground">{value}</span>
     </div>
   );
 }
@@ -44,13 +41,13 @@ export function ProductCard({ product, index }: { product: Product; index: numbe
   return (
     <article
       ref={ref}
-      style={{ transitionDelay: `${(index % 4) * 80}ms` }}
-      className={`group flex flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-soft transition-all duration-700 ease-out hover:-translate-y-1 hover:border-accent/50 hover:shadow-lift ${
+      style={{ transitionDelay: `${(index % 4) * 70}ms` }}
+      className={`group flex flex-col border border-border bg-card transition-all duration-700 ease-out hover:-translate-y-1 hover:shadow-lift ${
         visible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
       }`}
     >
-      <div className="relative m-2 flex items-center justify-center overflow-hidden rounded-[1.25rem] bg-ink p-6">
-        <span className="absolute left-4 top-4 rounded-full bg-card/90 px-3 py-1 text-[9px] font-semibold uppercase tracking-[0.18em] text-foreground">
+      <div className="relative flex aspect-[4/5] items-center justify-center overflow-hidden bg-sand">
+        <span className="absolute left-4 top-4 z-10 bg-ink/85 px-3 py-1 text-[9px] font-semibold uppercase tracking-[0.18em] text-gold">
           {product.category === "perfumes" ? "Fragrância" : "Importado"}
         </span>
         <img
@@ -59,28 +56,25 @@ export function ProductCard({ product, index }: { product: Product; index: numbe
           loading={index < 4 ? "eager" : "lazy"}
           decoding="async"
           fetchPriority={index < 4 ? "high" : "low"}
-          sizes="(max-width: 768px) 45vw, 300px"
+          sizes="(max-width: 768px) 90vw, 320px"
           width={768}
           height={768}
-          className="h-44 w-auto object-contain transition-transform duration-700 ease-out group-hover:scale-110"
+          className="h-full w-full object-cover transition-transform duration-[900ms] ease-out group-hover:scale-105"
         />
-
       </div>
 
-      <div className="flex flex-1 flex-col gap-3 px-6 pb-6 pt-4">
-        <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-accent">
-          {product.brand}
-        </p>
-        <h3 className="font-display text-xl font-extrabold uppercase leading-tight tracking-[-0.02em] text-foreground">
+      <div className="flex flex-1 flex-col gap-3 border-t border-border p-6">
+        <p className="eyebrow text-muted-foreground">{product.brand}</p>
+        <h3 className="font-display text-2xl font-medium leading-tight text-foreground">
           {product.name}
         </h3>
-        <p className="line-clamp-1 text-xs text-muted-foreground">{product.description}</p>
+        <p className="text-[13px] leading-relaxed text-muted-foreground">{product.description}</p>
 
         {product.notes && (
-          <div className="mt-1 space-y-1.5 rounded-2xl bg-secondary/70 p-4">
-            <Note symbol="♦" label="Saída" value={product.notes.top} />
-            <Note symbol="♥" label="Corpo" value={product.notes.heart} />
-            <Note symbol="●" label="Fundo" value={product.notes.base} />
+          <div className="mt-2 space-y-1.5 border-t border-border pt-4">
+            <Note label="Topo" value={product.notes.top} />
+            <Note label="Corpo" value={product.notes.heart} />
+            <Note label="Fundo" value={product.notes.base} />
           </div>
         )}
 
@@ -88,10 +82,10 @@ export function ProductCard({ product, index }: { product: Product; index: numbe
           href={whatsappLink(product)}
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-auto flex items-center justify-center gap-2 rounded-full bg-primary px-4 py-3.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-primary-foreground transition-all duration-300 hover:bg-accent hover:text-accent-foreground"
+          className="mt-auto inline-flex items-center justify-center gap-2 border border-ink bg-ink px-4 py-3.5 pt-3.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-background transition-all duration-300 hover:border-gold hover:bg-gold hover:text-ink"
         >
           <WhatsAppIcon />
-          Consultar no WhatsApp
+          Consultar
         </a>
       </div>
     </article>
