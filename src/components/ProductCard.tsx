@@ -31,8 +31,8 @@ function WhatsAppIcon() {
 
 function Note({ label, value }: { label: string; value: string }) {
   return (
-    <div className="flex gap-2 text-[11px] leading-relaxed">
-      <span className="w-11 shrink-0 uppercase tracking-[0.12em] text-gold">{label}</span>
+    <div className="flex gap-1.5 text-[10px] leading-relaxed sm:gap-2 sm:text-[11px]">
+      <span className="w-9 shrink-0 uppercase tracking-[0.1em] text-gold sm:w-11 sm:tracking-[0.12em]">{label}</span>
       <span className="min-w-0 text-muted-foreground">{value}</span>
     </div>
   );
