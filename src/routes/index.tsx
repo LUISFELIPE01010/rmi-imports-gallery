@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SiteHeader } from "@/components/SiteHeader";
 import { Hero } from "@/components/Hero";
 import { SiteFooter } from "@/components/SiteFooter";
@@ -10,7 +10,9 @@ import {
   products,
   WHATSAPP_NUMBER,
   type FilterId,
+  type Product,
 } from "@/data/products";
+import { fetchPublishedProducts } from "@/lib/catalog";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -68,6 +70,20 @@ const feedbacks = [
 
 function Index() {
   const [active, setActive] = useState<FilterId>("all");
+  const [remote, setRemote] = useState<Product[] | null>(null);
+
+  useEffect(() => {
+    let alive = true;
+    fetchPublishedProducts()
+      .then((list) => {
+        if (alive && list.length > 0) setRemote(list);
+      })
+      .catch(() => undefined);
+    return () => {
+      alive = false;
+    };
+  }, []);
+
   const [fading, setFading] = useState(false);
 
   const change = (id: FilterId) => {
@@ -81,7 +97,8 @@ function Index() {
 
   const parent = active.split("-")[0] as FilterId;
   const activeGroup = filterGroups.find((g) => g.id === parent);
-  const visible = products.filter((p) => matchesFilter(p, active));
+  const catalog = remote ?? products;
+  const visible = catalog.filter((p) => matchesFilter(p, active));
 
   return (
     <div className="min-h-screen bg-background">
