@@ -175,7 +175,7 @@ function Index() {
             </p>
           </div>
           <div
-            className={`grid grid-cols-1 gap-5 transition-opacity duration-200 sm:grid-cols-2 lg:grid-cols-4 ${
+            className={`grid grid-cols-2 gap-3 transition-opacity duration-200 sm:grid-cols-2 sm:gap-4 lg:grid-cols-4 lg:gap-5 ${
               fading ? "opacity-0" : "opacity-100"
             }`}
           >
