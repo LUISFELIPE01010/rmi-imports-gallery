@@ -34,22 +34,23 @@ export async function signImages(paths: string[]): Promise<Record<string, string
 
 export function rowToProduct(row: ProductRow, imageUrl: string): Product {
   const hasNotes = Boolean(row.note_top || row.note_heart || row.note_base);
-  return {
+  const product: Product = {
     id: row.id,
     brand: row.brand,
     name: row.name,
     description: row.description,
     image: imageUrl,
     category: row.category as Category,
-    gender: (row.gender ?? undefined) as Gender | undefined,
-    notes: hasNotes
-      ? {
-          top: row.note_top ?? "",
-          heart: row.note_heart ?? "",
-          base: row.note_base ?? "",
-        }
-      : undefined,
   };
+  if (row.gender) product.gender = row.gender as Gender;
+  if (hasNotes) {
+    product.notes = {
+      top: row.note_top ?? "",
+      heart: row.note_heart ?? "",
+      base: row.note_base ?? "",
+    };
+  }
+  return product;
 }
 
 export async function fetchPublishedProducts(): Promise<Product[]> {
