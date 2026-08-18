@@ -178,15 +178,36 @@ function Index() {
               {visible.length} itens
             </p>
           </div>
-          <div
-            className={`grid grid-cols-2 gap-3 transition-opacity duration-200 sm:grid-cols-2 sm:gap-4 lg:grid-cols-4 lg:gap-5 ${
-              fading ? "opacity-0" : "opacity-100"
-            }`}
-          >
-            {visible.map((p, i) => (
-              <ProductCard key={p.id} product={p} index={i} />
-            ))}
-          </div>
+          {loading ? (
+            <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4 lg:gap-5">
+              {Array.from({ length: 8 }).map((_, i) => (
+                <div
+                  key={i}
+                  className="animate-pulse rounded-3xl border border-border bg-card"
+                >
+                  <div className="aspect-[3/4] rounded-3xl bg-sand/60" />
+                  <div className="space-y-2 p-3">
+                    <div className="h-2 w-1/2 rounded bg-sand/60" />
+                    <div className="h-3 w-3/4 rounded bg-sand/60" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : visible.length === 0 ? (
+            <p className="rounded-3xl border border-dashed border-border bg-card px-6 py-16 text-center text-sm text-muted-foreground">
+              Nenhum produto disponível nesta categoria no momento.
+            </p>
+          ) : (
+            <div
+              className={`grid grid-cols-2 gap-3 transition-opacity duration-200 sm:grid-cols-2 sm:gap-4 lg:grid-cols-4 lg:gap-5 ${
+                fading ? "opacity-0" : "opacity-100"
+              }`}
+            >
+              {visible.map((p, i) => (
+                <ProductCard key={p.id} product={p} index={i} />
+              ))}
+            </div>
+          )}
         </section>
 
         {/* Feedbacks */}
