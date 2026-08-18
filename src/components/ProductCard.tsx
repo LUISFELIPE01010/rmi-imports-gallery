@@ -79,7 +79,7 @@ export function ProductCard({ product, index }: { product: Product; index: numbe
           href={whatsappLink(product)}
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-auto flex items-center justify-center gap-2 rounded-sm border border-accent px-4 py-3 text-[11px] uppercase tracking-[0.2em] text-accent transition-colors duration-300 hover:bg-accent hover:text-accent-foreground"
+          className="mt-auto flex items-center justify-center gap-2 rounded-sm border border-accent px-3 py-3 text-[10px] whitespace-nowrap uppercase tracking-[0.14em] text-accent transition-colors duration-300 hover:bg-accent hover:text-accent-foreground"
         >
           <WhatsAppIcon />
           Consultar no WhatsApp
