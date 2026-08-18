@@ -56,21 +56,6 @@ export function Hero() {
             </a>
           </div>
 
-          <div className="mt-12 flex items-center gap-4">
-            <div className="flex -space-x-2">
-              {["#8c6a4a", "#4a5a6b", "#6b4a5a"].map((c) => (
-                <span
-                  key={c}
-                  style={{ backgroundColor: c }}
-                  className="h-8 w-8 rounded-full border-2 border-ink"
-                />
-              ))}
-            </div>
-            <p className="text-[11px] leading-snug text-background/60">
-              <span className="block font-semibold text-background">Centenas de clientes</span>
-              atendidos em todo o Brasil
-            </p>
-          </div>
         </div>
       </div>
 
