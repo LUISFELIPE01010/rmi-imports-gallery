@@ -62,12 +62,12 @@ export function ProductCard({ product, index }: { product: Product; index: numbe
     <article
       ref={ref}
       style={{ transitionDelay: `${(index % 4) * 70}ms` }}
-      className={`group flex flex-col overflow-hidden rounded-3xl border border-border bg-card transition-all duration-700 ease-out hover:-translate-y-1 hover:shadow-lift ${
+      className={`group flex flex-col overflow-hidden rounded-2xl border border-border bg-card transition-all duration-700 ease-out hover:-translate-y-1 hover:shadow-lift sm:rounded-3xl ${
         visible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
       }`}
     >
-      <div className="relative flex aspect-[4/5] items-center justify-center overflow-hidden rounded-3xl bg-sand">
-        <span className="absolute left-4 top-4 z-10 rounded-full bg-ink/85 px-3 py-1 text-[9px] font-semibold uppercase tracking-[0.18em] text-gold">
+      <div className="relative flex aspect-[3/4] items-center justify-center overflow-hidden rounded-2xl bg-sand sm:aspect-[4/5] sm:rounded-3xl">
+        <span className="absolute left-3 top-3 z-10 rounded-full bg-ink/85 px-2 py-0.5 text-[8px] font-semibold uppercase tracking-[0.16em] text-gold sm:left-4 sm:top-4 sm:px-3 sm:py-1 sm:text-[9px] sm:tracking-[0.18em]">
           {categoryLabel[product.category]}
         </span>
         <img
@@ -76,28 +76,30 @@ export function ProductCard({ product, index }: { product: Product; index: numbe
           loading={index < 4 ? "eager" : "lazy"}
           decoding="async"
           fetchPriority={index < 4 ? "high" : "low"}
-          sizes="(max-width: 768px) 90vw, 320px"
+          sizes="(max-width: 640px) 45vw, (max-width: 768px) 90vw, 320px"
           width={768}
           height={768}
           className="h-full w-full object-cover transition-transform duration-[900ms] ease-out group-hover:scale-105"
         />
       </div>
 
-      <div className="flex flex-1 flex-col gap-3 border-t border-border p-6">
+      <div className="flex flex-1 flex-col gap-2 border-t border-border p-3 sm:gap-3 sm:p-4 lg:p-5">
         <p className="eyebrow text-muted-foreground">{product.brand}</p>
-        <h3 className="font-display text-lg font-bold tracking-tight leading-tight text-foreground">
+        <h3 className="font-display text-sm font-bold leading-tight tracking-tight text-foreground sm:text-base lg:text-lg">
           {product.name}
         </h3>
-        <p className="text-[13px] leading-relaxed text-muted-foreground">{product.description}</p>
+        <p className="text-[11px] leading-relaxed text-muted-foreground sm:text-[12px] lg:text-[13px]">
+          {product.description}
+        </p>
 
         {product.climate && (
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-1.5 sm:gap-2">
             <ClimateBadge climate={product.climate} />
           </div>
         )}
 
         {product.notes && (
-          <div className="mt-2 space-y-1.5 border-t border-border pt-4">
+          <div className="mt-1 space-y-1 border-t border-border pt-2 sm:mt-2 sm:space-y-1.5 sm:pt-3">
             <Note label="Topo" value={product.notes.top} />
             <Note label="Corpo" value={product.notes.heart} />
             <Note label="Fundo" value={product.notes.base} />
@@ -108,7 +110,7 @@ export function ProductCard({ product, index }: { product: Product; index: numbe
           href={whatsappLink(product)}
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-auto inline-flex items-center justify-center gap-2 rounded-full border border-ink bg-ink px-4 py-3.5 pt-3.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-background transition-all duration-300 hover:border-gold hover:bg-gold hover:text-ink"
+          className="mt-auto inline-flex items-center justify-center gap-1.5 rounded-full border border-ink bg-ink px-3 py-2 text-[9px] font-semibold uppercase tracking-[0.14em] text-background transition-all duration-300 hover:border-gold hover:bg-gold hover:text-ink sm:gap-2 sm:px-4 sm:py-2.5 sm:text-[10px] sm:tracking-[0.16em] lg:py-3"
         >
           <WhatsAppIcon />
           Consultar
