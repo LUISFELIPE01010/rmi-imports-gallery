@@ -66,18 +66,18 @@ function Index() {
       <main>
         <Hero />
 
-        <div className="sticky top-[73px] z-40 border-b border-border bg-background/90 backdrop-blur-md">
+        <div className="sticky top-[65px] z-40 border-b border-border bg-background/85 backdrop-blur-xl">
           <div className="mx-auto max-w-7xl overflow-x-auto px-6 py-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-            <div className="flex w-max gap-3">
+            <div className="flex w-max gap-2">
               {filters.map((f) => (
                 <button
                   key={f.id}
                   type="button"
                   onClick={() => change(f.id)}
-                  className={`whitespace-nowrap rounded-full border px-5 py-2 text-[11px] uppercase tracking-[0.18em] transition-colors duration-300 ${
+                  className={`whitespace-nowrap rounded-full border px-5 py-2.5 text-[11px] font-semibold uppercase tracking-[0.14em] transition-all duration-300 ${
                     active === f.id
-                      ? "border-accent bg-accent text-accent-foreground"
-                      : "border-accent/40 text-muted-foreground hover:text-accent"
+                      ? "border-primary bg-primary text-primary-foreground shadow-soft"
+                      : "border-border bg-card text-muted-foreground hover:border-accent/60 hover:text-foreground"
                   }`}
                 >
                   {f.label}
@@ -87,7 +87,15 @@ function Index() {
           </div>
         </div>
 
-        <section id="perfumes" className="mx-auto max-w-7xl px-6 py-24">
+        <section id="perfumes" className="mx-auto max-w-7xl px-6 py-20">
+          <div className="mb-12 grid grid-cols-[minmax(0,1fr)_auto] items-end gap-4">
+            <h2 className="display-tight min-w-0 text-3xl text-foreground sm:text-5xl">
+              O catálogo
+            </h2>
+            <p className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
+              {visible.length} itens
+            </p>
+          </div>
           <div
             className={`grid grid-cols-1 gap-6 transition-opacity duration-200 sm:grid-cols-2 lg:grid-cols-4 ${
               fading ? "opacity-0" : "opacity-100"
@@ -98,6 +106,7 @@ function Index() {
             ))}
           </div>
         </section>
+
       </main>
       <SiteFooter />
     </div>
