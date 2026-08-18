@@ -79,8 +79,8 @@ export const categoryLabel: Record<Category, string> = {
   eletronicos: "Eletrônico",
 };
 
-export const WHATSAPP_NUMBER = "5513999999999";
-export const INSTAGRAM_URL = "https://instagram.com/rmiimports";
+export const WHATSAPP_NUMBER = "5513996018936";
+export const INSTAGRAM_URL = "https://www.instagram.com/rmi.imports/";
 
 export const whatsappLink = (product: Product) => {
   const message = `Olá, tenho interesse no produto ${product.name}`;
