@@ -6,6 +6,7 @@ import {
   categoryLabel,
   climateLabel,
   filterGroups,
+  formatPrice,
   type Category,
   type Climate,
   type FilterId,
