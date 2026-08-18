@@ -1,67 +1,91 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { WHATSAPP_NUMBER } from "@/data/products";
 
 const links = [
-  { label: "Perfumes", href: "#perfumes" },
-  { label: "Relógios", href: "#relogios" },
-  { label: "Celulares", href: "#celulares" },
-  { label: "Outros", href: "#outros" },
+  { href: "#catalogo", label: "Perfumes" },
+  { href: "#colecoes", label: "Coleções" },
+  { href: "#sobre", label: "Sobre" },
+  { href: "#contato", label: "Contato" },
 ];
 
 export function SiteHeader() {
+  const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
 
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-border bg-background/75 backdrop-blur-xl">
-      <div className="mx-auto grid max-w-7xl grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-6 py-4">
-        <a href="#top" className="min-w-0 truncate">
-          <span className="font-display text-lg font-extrabold uppercase tracking-[-0.02em] text-foreground">
+    <header
+      className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
+        scrolled
+          ? "border-b border-ink-soft/60 bg-ink/95 backdrop-blur-xl"
+          : "border-b border-transparent bg-transparent"
+      }`}
+    >
+      <div className="mx-auto flex h-[72px] max-w-7xl items-center justify-between px-5 sm:px-8">
+        <a href="#top" className="group flex flex-col leading-none">
+          <span className="font-display text-2xl font-medium tracking-[0.18em] text-background">
             RMI
           </span>
-          <span className="ml-2 text-[11px] uppercase tracking-[0.34em] text-muted-foreground">
-            Imports
-          </span>
+          <span className="eyebrow mt-0.5 text-[8px] tracking-[0.42em] text-gold">imports</span>
         </a>
 
-        <nav className="hidden items-center gap-2 md:flex">
+        <nav className="hidden items-center gap-9 md:flex">
           {links.map((l) => (
             <a
               key={l.href}
               href={l.href}
-              className="rounded-full px-4 py-2 text-[11px] font-medium uppercase tracking-[0.16em] text-muted-foreground transition-colors duration-300 hover:bg-secondary hover:text-foreground"
+              className="relative text-[13px] font-normal text-background/70 transition-colors duration-300 hover:text-background after:absolute after:-bottom-1.5 after:left-0 after:h-px after:w-0 after:bg-gold after:transition-all after:duration-300 hover:after:w-full"
             >
               {l.label}
             </a>
           ))}
         </nav>
 
-        <button
-          type="button"
-          aria-label="Abrir menu"
-          aria-expanded={open}
-          onClick={() => setOpen((v) => !v)}
-          className="flex h-9 w-9 shrink-0 flex-col items-center justify-center gap-1.5 rounded-full border border-border md:hidden"
-        >
-          <span
-            className={`h-px w-4 bg-foreground transition-transform duration-300 ${open ? "translate-y-[3px] rotate-45" : ""}`}
-          />
-          <span
-            className={`h-px w-4 bg-foreground transition-transform duration-300 ${open ? "-translate-y-[3px] -rotate-45" : ""}`}
-          />
-        </button>
+        <div className="flex items-center gap-3">
+          <a
+            href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Olá, quero conhecer o catálogo RMI Imports")}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hidden rounded-sm bg-gold px-5 py-2.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-ink transition-all duration-300 hover:bg-gold-soft sm:inline-flex"
+          >
+            Consultar
+          </a>
+          <button
+            type="button"
+            aria-label="Menu"
+            onClick={() => setOpen((v) => !v)}
+            className="flex h-9 w-9 items-center justify-center text-background md:hidden"
+          >
+            <span className="relative block h-3 w-5">
+              <span
+                className={`absolute left-0 h-px w-5 bg-current transition-all duration-300 ${open ? "top-1.5 rotate-45" : "top-0"}`}
+              />
+              <span
+                className={`absolute left-0 top-3 h-px w-5 bg-current transition-all duration-300 ${open ? "-translate-y-1.5 -rotate-45" : ""}`}
+              />
+            </span>
+          </button>
+        </div>
       </div>
 
       <div
-        className={`overflow-hidden border-t border-border transition-[max-height,opacity] duration-500 md:hidden ${
-          open ? "max-h-64 opacity-100" : "max-h-0 opacity-0"
+        className={`overflow-hidden border-t border-ink-soft/60 bg-ink/98 backdrop-blur-xl transition-all duration-400 md:hidden ${
+          open ? "max-h-72" : "max-h-0 border-transparent"
         }`}
       >
-        <nav className="flex flex-col gap-4 px-6 py-6">
+        <nav className="flex flex-col px-6 py-3">
           {links.map((l) => (
             <a
               key={l.href}
               href={l.href}
               onClick={() => setOpen(false)}
-              className="font-display text-lg font-bold uppercase tracking-tight text-foreground transition-colors hover:text-accent"
+              className="border-b border-ink-soft/50 py-3.5 font-display text-xl text-background/85 last:border-0"
             >
               {l.label}
             </a>
