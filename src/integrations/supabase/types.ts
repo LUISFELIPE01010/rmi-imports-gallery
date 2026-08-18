@@ -18,6 +18,7 @@ export type Database = {
         Row: {
           brand: string
           category: string
+          climate: string | null
           created_at: string
           description: string
           gender: string | null
@@ -34,6 +35,7 @@ export type Database = {
         Insert: {
           brand?: string
           category: string
+          climate?: string | null
           created_at?: string
           description?: string
           gender?: string | null
@@ -50,6 +52,7 @@ export type Database = {
         Update: {
           brand?: string
           category?: string
+          climate?: string | null
           created_at?: string
           description?: string
           gender?: string | null
