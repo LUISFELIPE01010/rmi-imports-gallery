@@ -3,7 +3,6 @@ import { WHATSAPP_NUMBER } from "@/data/products";
 
 const links = [
   { href: "#catalogo", label: "Catálogo" },
-  { href: "#colecoes", label: "Categorias" },
   { href: "#contato", label: "Contato" },
 ];
 
