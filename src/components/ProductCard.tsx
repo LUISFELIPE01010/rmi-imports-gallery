@@ -13,9 +13,9 @@ function ClimateBadge({ climate }: { climate: Climate }) {
   return (
     <span
       title={`Indicado para ${climateLabel[climate].toLowerCase()}`}
-      className="inline-flex items-center gap-1 rounded-full border border-gold/40 bg-gold/10 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.1em] text-foreground sm:gap-1.5 sm:px-2.5 sm:py-1 sm:text-[10px] sm:tracking-[0.12em]"
+      className="inline-flex items-center gap-1.5 rounded-full border border-gold/40 bg-gold/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.1em] text-foreground sm:px-3 sm:py-1.5 sm:text-[11px] sm:tracking-[0.12em]"
     >
-      <Icon className="h-3 w-3 text-gold sm:h-3.5 sm:w-3.5" strokeWidth={1.8} aria-hidden="true" />
+      <Icon className="h-3.5 w-3.5 text-gold sm:h-4 sm:w-4" strokeWidth={1.8} aria-hidden="true" />
       {climateLabel[climate]}
     </span>
   );
@@ -31,8 +31,8 @@ function WhatsAppIcon() {
 
 function Note({ label, value }: { label: string; value: string }) {
   return (
-    <div className="flex gap-1.5 text-[10px] leading-relaxed sm:gap-2 sm:text-[11px]">
-      <span className="w-9 shrink-0 uppercase tracking-[0.1em] text-gold sm:w-11 sm:tracking-[0.12em]">{label}</span>
+    <div className="flex gap-1.5 text-[11px] leading-relaxed sm:gap-2 sm:text-[12px]">
+      <span className="w-10 shrink-0 uppercase tracking-[0.1em] text-gold sm:w-11 sm:tracking-[0.12em]">{label}</span>
       <span className="min-w-0 text-muted-foreground">{value}</span>
     </div>
   );
@@ -66,12 +66,12 @@ export function ProductCard({ product, index }: { product: Product; index: numbe
         visible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
       }`}
     >
-      <div className="relative flex aspect-[3/4] items-center justify-center overflow-hidden rounded-2xl bg-sand sm:aspect-[4/5] sm:rounded-3xl">
-        <span className="absolute left-3 top-3 z-10 rounded-full bg-ink/85 px-2 py-0.5 text-[8px] font-semibold uppercase tracking-[0.16em] text-gold sm:left-4 sm:top-4 sm:px-3 sm:py-1 sm:text-[9px] sm:tracking-[0.18em]">
+      <div className="relative flex aspect-[4/5] items-center justify-center overflow-hidden rounded-2xl bg-sand sm:rounded-3xl">
+        <span className="absolute left-3 top-3 z-10 rounded-full bg-ink/85 px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[0.14em] text-gold sm:left-4 sm:top-4 sm:px-3 sm:py-1 sm:text-[10px] sm:tracking-[0.16em]">
           {categoryLabel[product.category]}
         </span>
         {product.soldOut && (
-          <span className="absolute right-3 top-3 z-10 rounded-full bg-background/95 px-2 py-0.5 text-[8px] font-semibold uppercase tracking-[0.16em] text-foreground shadow-soft sm:right-4 sm:top-4 sm:px-3 sm:py-1 sm:text-[9px]">
+          <span className="absolute right-3 top-3 z-10 rounded-full bg-background/95 px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[0.14em] text-foreground shadow-soft sm:right-4 sm:top-4 sm:px-3 sm:py-1 sm:text-[10px]">
             Esgotado
           </span>
         )}
@@ -81,24 +81,24 @@ export function ProductCard({ product, index }: { product: Product; index: numbe
           loading={index < 4 ? "eager" : "lazy"}
           decoding="async"
           fetchPriority={index < 4 ? "high" : "low"}
-          sizes="(max-width: 640px) 45vw, (max-width: 768px) 90vw, 320px"
+          sizes="(max-width: 640px) 46vw, (max-width: 768px) 46vw, 320px"
           width={768}
           height={768}
           className={`h-full w-full object-cover transition-transform duration-[900ms] ease-out group-hover:scale-105 ${product.soldOut ? "opacity-60 grayscale" : ""}`}
         />
       </div>
 
-      <div className="flex flex-1 flex-col gap-2 border-t border-border p-3 sm:gap-3 sm:p-4 lg:p-5">
+      <div className="flex flex-1 flex-col gap-2.5 border-t border-border p-3 sm:gap-3 sm:p-4 lg:p-5">
         <p className="eyebrow text-muted-foreground">{product.brand}</p>
-        <h3 className="font-display text-sm font-bold leading-tight tracking-tight text-foreground sm:text-base lg:text-lg">
+        <h3 className="font-display text-[15px] font-bold leading-tight tracking-tight text-foreground sm:text-base lg:text-lg">
           {product.name}
         </h3>
-        <p className="text-[11px] leading-relaxed text-muted-foreground sm:text-[12px] lg:text-[13px]">
+        <p className="text-[12px] leading-relaxed text-muted-foreground sm:text-[13px] lg:text-[14px]">
           {product.description}
         </p>
 
         {typeof product.price === "number" && (
-          <p className="font-display text-base font-bold tracking-tight text-foreground sm:text-lg">
+          <p className="font-display text-lg font-bold tracking-tight text-foreground sm:text-xl">
             {formatPrice(product.price)}
           </p>
         )}
@@ -110,7 +110,7 @@ export function ProductCard({ product, index }: { product: Product; index: numbe
         )}
 
         {product.notes && (
-          <div className="mt-1 space-y-1 border-t border-border pt-2 sm:mt-2 sm:space-y-1.5 sm:pt-3">
+          <div className="mt-1 space-y-1.5 border-t border-border pt-2.5 sm:mt-2 sm:space-y-1.5 sm:pt-3">
             <Note label="Topo" value={product.notes.top} />
             <Note label="Corpo" value={product.notes.heart} />
             <Note label="Fundo" value={product.notes.base} />
@@ -121,7 +121,7 @@ export function ProductCard({ product, index }: { product: Product; index: numbe
           href={whatsappLink(product)}
           target="_blank"
           rel="noopener noreferrer"
-          className={`mt-auto inline-flex items-center justify-center gap-1.5 rounded-full border px-3 py-2 text-[9px] font-semibold uppercase tracking-[0.14em] transition-all duration-300 sm:gap-2 sm:px-4 sm:py-2.5 sm:text-[10px] sm:tracking-[0.16em] lg:py-3 ${
+          className={`mt-auto inline-flex h-10 items-center justify-center gap-2 rounded-full border px-4 text-[10px] font-semibold uppercase tracking-[0.14em] transition-all duration-300 sm:h-11 sm:gap-2 sm:px-5 sm:text-[11px] sm:tracking-[0.16em] ${
             product.soldOut
               ? "border-border bg-transparent text-muted-foreground hover:border-ink hover:text-foreground"
               : "border-ink bg-ink text-background hover:border-gold hover:bg-gold hover:text-ink"

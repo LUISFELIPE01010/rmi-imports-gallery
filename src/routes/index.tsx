@@ -179,13 +179,13 @@ function Index() {
             </p>
           </div>
           {loading ? (
-            <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4 lg:gap-5">
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:gap-5">
               {Array.from({ length: 8 }).map((_, i) => (
                 <div
                   key={i}
                   className="animate-pulse rounded-3xl border border-border bg-card"
                 >
-                  <div className="aspect-[3/4] rounded-3xl bg-sand/60" />
+                  <div className="aspect-[4/5] rounded-3xl bg-sand/60" />
                   <div className="space-y-2 p-3">
                     <div className="h-2 w-1/2 rounded bg-sand/60" />
                     <div className="h-3 w-3/4 rounded bg-sand/60" />
@@ -199,7 +199,7 @@ function Index() {
             </p>
           ) : (
             <div
-              className={`grid grid-cols-2 gap-3 transition-opacity duration-200 sm:grid-cols-2 sm:gap-4 lg:grid-cols-4 lg:gap-5 ${
+              className={`grid grid-cols-2 gap-3 transition-opacity duration-200 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:gap-5 ${
                 fading ? "opacity-0" : "opacity-100"
               }`}
             >
