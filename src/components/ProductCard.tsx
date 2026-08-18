@@ -75,17 +75,23 @@ export function ProductCard({ product, index }: { product: Product; index: numbe
             Esgotado
           </span>
         )}
-        <img
-          src={product.image}
-          alt={product.name}
-          loading={index < 4 ? "eager" : "lazy"}
-          decoding="async"
-          fetchPriority={index < 4 ? "high" : "low"}
-          sizes="(max-width: 640px) 46vw, (max-width: 768px) 46vw, 320px"
-          width={768}
-          height={768}
-          className={`h-full w-full object-cover transition-transform duration-[900ms] ease-out group-hover:scale-105 ${product.soldOut ? "opacity-60 grayscale" : ""}`}
-        />
+        {product.image ? (
+          <img
+            src={product.image}
+            alt={product.name}
+            loading={index < 4 ? "eager" : "lazy"}
+            decoding="async"
+            fetchPriority={index < 4 ? "high" : "low"}
+            sizes="(max-width: 640px) 46vw, (max-width: 768px) 46vw, 320px"
+            width={768}
+            height={768}
+            className={`h-full w-full object-cover transition-transform duration-[900ms] ease-out group-hover:scale-105 ${product.soldOut ? "opacity-60 grayscale" : ""}`}
+          />
+        ) : (
+          <span className="px-4 text-center text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+            Imagem em breve
+          </span>
+        )}
       </div>
 
       <div className="flex flex-1 flex-col gap-2.5 border-t border-border p-3 sm:gap-3 sm:p-4 lg:p-5">
