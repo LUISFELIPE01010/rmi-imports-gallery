@@ -1,5 +1,25 @@
 import { useEffect, useRef, useState } from "react";
-import { categoryLabel, type Product, whatsappLink } from "@/data/products";
+import { Snowflake, Sun, SunSnow } from "lucide-react";
+import { categoryLabel, climateLabel, type Climate, type Product, whatsappLink } from "@/data/products";
+
+const climateIcon: Record<Climate, typeof Sun> = {
+  calor: Sun,
+  frio: Snowflake,
+  versatil: SunSnow,
+};
+
+function ClimateBadge({ climate }: { climate: Climate }) {
+  const Icon = climateIcon[climate];
+  return (
+    <span
+      title={`Indicado para ${climateLabel[climate].toLowerCase()}`}
+      className="inline-flex items-center gap-1.5 rounded-full border border-gold/40 bg-gold/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-foreground"
+    >
+      <Icon className="h-3.5 w-3.5 text-gold" strokeWidth={1.8} aria-hidden="true" />
+      {climateLabel[climate]}
+    </span>
+  );
+}
 
 function WhatsAppIcon() {
   return (
