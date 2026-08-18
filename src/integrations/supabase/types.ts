@@ -29,6 +29,7 @@ export type Database = {
           note_heart: string | null
           note_top: string | null
           published: boolean
+          sold_out: boolean
           sort_order: number
           updated_at: string
         }
@@ -46,6 +47,7 @@ export type Database = {
           note_heart?: string | null
           note_top?: string | null
           published?: boolean
+          sold_out?: boolean
           sort_order?: number
           updated_at?: string
         }
@@ -63,6 +65,7 @@ export type Database = {
           note_heart?: string | null
           note_top?: string | null
           published?: boolean
+          sold_out?: boolean
           sort_order?: number
           updated_at?: string
         }

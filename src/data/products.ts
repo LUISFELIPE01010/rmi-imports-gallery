@@ -42,6 +42,7 @@ export interface Product {
   gender?: Gender;
   notes?: FragranceNotes;
   climate?: Climate;
+  soldOut?: boolean;
 }
 
 export interface FilterGroup {
