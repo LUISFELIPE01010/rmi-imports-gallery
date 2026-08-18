@@ -30,10 +30,11 @@ function WhatsAppIcon() {
 }
 
 function Note({ label, value }: { label: string; value: string }) {
+  if (!value) return null;
   return (
-    <div className="flex gap-1.5 text-[11px] leading-relaxed sm:gap-2 sm:text-[12px]">
-      <span className="w-10 shrink-0 uppercase tracking-[0.1em] text-gold sm:w-11 sm:tracking-[0.12em]">{label}</span>
-      <span className="min-w-0 text-muted-foreground">{value}</span>
+    <div className="grid grid-cols-[minmax(0,1fr)] gap-0.5">
+      <span className="text-[9px] font-semibold uppercase tracking-[0.16em] text-gold">{label}</span>
+      <span className="min-w-0 text-[11px] leading-relaxed text-muted-foreground sm:text-[12px]">{value}</span>
     </div>
   );
 }
