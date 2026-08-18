@@ -169,19 +169,36 @@ function Index() {
         </section>
 
         {/* Feedbacks */}
-        <section className="border-t border-border bg-sand/50">
-          <div className="mx-auto max-w-7xl px-5 py-14 sm:px-8">
+        <section className="overflow-hidden border-t border-border bg-sand/50">
+          <div className="mx-auto max-w-7xl px-5 pb-6 pt-14 sm:px-8">
             <p className="eyebrow text-gold">Quem já comprou</p>
-            <div className="mt-8 grid gap-6 sm:grid-cols-3">
-              {feedbacks.map((f) => (
-                <figure key={f.author} className="rounded-2xl border border-border bg-card p-6">
+            <h2 className="display-serif mt-4 text-[clamp(1.6rem,3.5vw,2.4rem)] text-foreground">
+              Clientes da Baixada Santista
+            </h2>
+          </div>
+
+          <div className="relative">
+            <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-8 bg-gradient-to-r from-sand/50 to-transparent sm:w-16" />
+            <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-8 bg-gradient-to-l from-sand/50 to-transparent sm:w-16" />
+
+            <div className="marquee-track flex w-max gap-5 px-5 sm:px-8">
+              {[...feedbacks, ...feedbacks].map((f, i) => (
+                <figure
+                  key={`${f.author}-${i}`}
+                  className="w-[300px] shrink-0 rounded-2xl border border-border bg-card p-6 shadow-soft sm:w-[360px]"
+                >
                   <blockquote className="text-[13px] leading-relaxed text-muted-foreground">
                     “{f.text}”
                   </blockquote>
-                  <figcaption className="mt-4 text-[11px] uppercase tracking-[0.14em] text-foreground">
-                    {f.author}
-                    <span className="ml-2 normal-case tracking-normal text-muted-foreground">
-                      {f.city}
+                  <figcaption className="mt-5 flex items-center gap-3 text-[11px] uppercase tracking-[0.14em] text-foreground">
+                    <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-ink text-background font-bold text-[10px]">
+                      {f.author.charAt(0)}
+                    </span>
+                    <span>
+                      {f.author}
+                      <span className="ml-2 normal-case tracking-normal text-muted-foreground">
+                        {f.city}
+                      </span>
                     </span>
                   </figcaption>
                 </figure>
