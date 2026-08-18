@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { type Product, whatsappLink } from "@/data/products";
+import { categoryLabel, type Product, whatsappLink } from "@/data/products";
 
 function WhatsAppIcon() {
   return (
@@ -82,7 +82,7 @@ export function ProductCard({ product, index }: { product: Product; index: numbe
           href={whatsappLink(product)}
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-auto inline-flex items-center justify-center gap-2 border border-ink bg-ink px-4 py-3.5 pt-3.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-background transition-all duration-300 hover:border-gold hover:bg-gold hover:text-ink"
+          className="mt-auto inline-flex items-center justify-center gap-2 rounded-full border border-ink bg-ink px-4 py-3.5 pt-3.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-background transition-all duration-300 hover:border-gold hover:bg-gold hover:text-ink"
         >
           <WhatsAppIcon />
           Consultar
