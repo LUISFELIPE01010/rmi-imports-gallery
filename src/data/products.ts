@@ -7,6 +7,13 @@ import phone1 from "@/assets/phone-1.jpg";
 
 export type Category = "perfumes" | "bodysplash" | "cremes" | "eletronicos";
 export type Gender = "masculino" | "feminino" | "unissex";
+export type Climate = "calor" | "frio" | "versatil";
+
+export const climateLabel: Record<Climate, string> = {
+  calor: "Calor",
+  frio: "Frio",
+  versatil: "Versátil",
+};
 
 export type FilterId =
   | "all"
@@ -34,6 +41,7 @@ export interface Product {
   category: Category;
   gender?: Gender;
   notes?: FragranceNotes;
+  climate?: Climate;
 }
 
 export interface FilterGroup {
@@ -90,6 +98,7 @@ export const whatsappLink = (product: Product) => {
 export const products: Product[] = [
   {
     id: "oud-royal",
+    climate: "frio",
     brand: "Initio",
     name: "Oud for Greatness",
     description: "Amadeirado oriental com base de oud e baunilha.",
@@ -104,6 +113,7 @@ export const products: Product[] = [
   },
   {
     id: "tf-noir",
+    climate: "frio",
     brand: "Tom Ford",
     name: "Noir Extreme",
     description: "Âmbar especiado com doçura amadeirada.",
@@ -118,6 +128,7 @@ export const products: Product[] = [
   },
   {
     id: "dior-sauvage",
+    climate: "versatil",
     brand: "Dior",
     name: "Sauvage Elixir",
     description: "Fougère intenso com licorosa lavanda.",
@@ -132,6 +143,7 @@ export const products: Product[] = [
   },
   {
     id: "lattafa-asad",
+    climate: "versatil",
     brand: "Lattafa",
     name: "Asad",
     description: "Abacaxi cremoso sobre tabaco e café.",
@@ -146,6 +158,7 @@ export const products: Product[] = [
   },
   {
     id: "alhambra-rose",
+    climate: "versatil",
     brand: "Maison Alhambra",
     name: "Rouge Éclat",
     description: "Floral frutado com fundo de baunilha.",
@@ -160,6 +173,7 @@ export const products: Product[] = [
   },
   {
     id: "dior-jadore",
+    climate: "calor",
     brand: "Dior",
     name: "J'adore Infinissime",
     description: "Buquê floral luminoso e sedoso.",
@@ -174,6 +188,7 @@ export const products: Product[] = [
   },
   {
     id: "initio-psychedelic",
+    climate: "versatil",
     brand: "Initio",
     name: "Psychedelic Love",
     description: "Rosa contemporânea com toque de couro.",
@@ -188,6 +203,7 @@ export const products: Product[] = [
   },
   {
     id: "lattafa-khamrah",
+    climate: "frio",
     brand: "Lattafa",
     name: "Khamrah",
     description: "Tâmaras e especiarias em base gourmand.",
@@ -202,6 +218,7 @@ export const products: Product[] = [
   },
   {
     id: "splash-blue",
+    climate: "calor",
     brand: "Victoria's Secret",
     name: "Body Splash Blue Rush",
     description: "Refrescante e cítrico para o dia a dia.",
@@ -211,6 +228,7 @@ export const products: Product[] = [
   },
   {
     id: "splash-berry",
+    climate: "calor",
     brand: "Victoria's Secret",
     name: "Body Splash Velvet Petals",
     description: "Doce e floral, fixação leve e marcante.",

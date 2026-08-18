@@ -36,7 +36,15 @@ export function SiteFooter() {
 
       <div className="border-t border-background/10">
         <div className="mx-auto max-w-7xl px-5 py-3 text-[11px] text-background/40 sm:px-8">
-          © {new Date().getFullYear()} RMI Imports
+          <span className="flex items-center justify-between gap-4">
+            <span>© {new Date().getFullYear()} RMI Imports</span>
+            <a
+              href="/admin"
+              className="text-background/35 transition-colors hover:text-gold"
+            >
+              Admin
+            </a>
+          </span>
         </div>
       </div>
     </footer>

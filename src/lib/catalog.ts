@@ -1,5 +1,5 @@
 import { supabase } from "@/integrations/supabase/client";
-import type { Category, Gender, Product } from "@/data/products";
+import type { Category, Climate, Gender, Product } from "@/data/products";
 
 export const BUCKET = "product-images";
 
@@ -14,6 +14,7 @@ export interface ProductRow {
   note_top: string | null;
   note_heart: string | null;
   note_base: string | null;
+  climate: string | null;
   sort_order: number;
   published: boolean;
 }
@@ -43,6 +44,7 @@ export function rowToProduct(row: ProductRow, imageUrl: string): Product {
     category: row.category as Category,
   };
   if (row.gender) product.gender = row.gender as Gender;
+  if (row.climate) product.climate = row.climate as Climate;
   if (hasNotes) {
     product.notes = {
       top: row.note_top ?? "",
