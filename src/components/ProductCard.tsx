@@ -160,44 +160,7 @@ export function ProductCard({ product, index }: { product: Product; index: numbe
           </div>
         )}
 
-        {(product.description || product.notes) && (
-          <div className="mt-0.5">
-            <button
-              type="button"
-              onClick={() => setOpen((v) => !v)}
-              aria-expanded={open}
-              className="inline-flex items-center gap-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-foreground/70 transition-colors hover:text-foreground"
-            >
-              {open ? "Ocultar" : "Ver descrição"}
-              <ChevronDown
-                className={`h-3.5 w-3.5 transition-transform duration-300 ${open ? "rotate-180" : ""}`}
-                strokeWidth={2}
-                aria-hidden="true"
-              />
-            </button>
-
-            <div
-              className={`grid transition-all duration-300 ease-out ${open ? "mt-2.5 grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"}`}
-            >
-              <div className="overflow-hidden">
-                <div className="space-y-2.5 border-t border-border pt-2.5">
-                  {product.description && (
-                    <p className="text-[12px] leading-relaxed text-muted-foreground sm:text-[13px]">
-                      {product.description}
-                    </p>
-                  )}
-                  {product.notes && (
-                    <div className="grid gap-2 rounded-xl bg-sand/60 p-2.5">
-                      <Note label="Topo" value={product.notes.top} />
-                      <Note label="Corpo" value={product.notes.heart} />
-                      <Note label="Fundo" value={product.notes.base} />
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
+        <ExpandableDescription product={product} />
 
         <a
           href={whatsappLink(product)}
