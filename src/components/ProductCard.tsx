@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Snowflake, Sun, SunSnow } from "lucide-react";
+import { ChevronDown, Snowflake, Sun, SunSnow } from "lucide-react";
 import { categoryLabel, climateLabel, formatPrice, type Climate, type Product, whatsappLink } from "@/data/products";
 
 const climateIcon: Record<Climate, typeof Sun> = {
@@ -30,10 +30,11 @@ function WhatsAppIcon() {
 }
 
 function Note({ label, value }: { label: string; value: string }) {
+  if (!value) return null;
   return (
-    <div className="flex gap-1.5 text-[11px] leading-relaxed sm:gap-2 sm:text-[12px]">
-      <span className="w-10 shrink-0 uppercase tracking-[0.1em] text-gold sm:w-11 sm:tracking-[0.12em]">{label}</span>
-      <span className="min-w-0 text-muted-foreground">{value}</span>
+    <div className="grid grid-cols-[minmax(0,1fr)] gap-0.5">
+      <span className="text-[9px] font-semibold uppercase tracking-[0.16em] text-gold">{label}</span>
+      <span className="min-w-0 text-[11px] leading-relaxed text-muted-foreground sm:text-[12px]">{value}</span>
     </div>
   );
 }
@@ -41,6 +42,7 @@ function Note({ label, value }: { label: string; value: string }) {
 export function ProductCard({ product, index }: { product: Product; index: number }) {
   const ref = useRef<HTMLElement | null>(null);
   const [visible, setVisible] = useState(false);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     const el = ref.current;
@@ -99,10 +101,6 @@ export function ProductCard({ product, index }: { product: Product; index: numbe
         <h3 className="font-display text-[15px] font-bold leading-tight tracking-tight text-foreground sm:text-base lg:text-lg">
           {product.name}
         </h3>
-        <p className="text-[12px] leading-relaxed text-muted-foreground sm:text-[13px] lg:text-[14px]">
-          {product.description}
-        </p>
-
         {typeof product.price === "number" && (
           <p className="font-display text-lg font-bold tracking-tight text-foreground sm:text-xl">
             {formatPrice(product.price)}
@@ -115,11 +113,42 @@ export function ProductCard({ product, index }: { product: Product; index: numbe
           </div>
         )}
 
-        {product.notes && (
-          <div className="mt-1 space-y-1.5 border-t border-border pt-2.5 sm:mt-2 sm:space-y-1.5 sm:pt-3">
-            <Note label="Topo" value={product.notes.top} />
-            <Note label="Corpo" value={product.notes.heart} />
-            <Note label="Fundo" value={product.notes.base} />
+        {(product.description || product.notes) && (
+          <div className="mt-0.5">
+            <button
+              type="button"
+              onClick={() => setOpen((v) => !v)}
+              aria-expanded={open}
+              className="inline-flex items-center gap-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-foreground/70 transition-colors hover:text-foreground"
+            >
+              {open ? "Ocultar" : "Ver descrição"}
+              <ChevronDown
+                className={`h-3.5 w-3.5 transition-transform duration-300 ${open ? "rotate-180" : ""}`}
+                strokeWidth={2}
+                aria-hidden="true"
+              />
+            </button>
+
+            <div
+              className={`grid transition-all duration-300 ease-out ${open ? "mt-2.5 grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"}`}
+            >
+              <div className="overflow-hidden">
+                <div className="space-y-2.5 border-t border-border pt-2.5">
+                  {product.description && (
+                    <p className="text-[12px] leading-relaxed text-muted-foreground sm:text-[13px]">
+                      {product.description}
+                    </p>
+                  )}
+                  {product.notes && (
+                    <div className="grid gap-2 rounded-xl bg-sand/60 p-2.5">
+                      <Note label="Topo" value={product.notes.top} />
+                      <Note label="Corpo" value={product.notes.heart} />
+                      <Note label="Fundo" value={product.notes.base} />
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
           </div>
         )}
 
