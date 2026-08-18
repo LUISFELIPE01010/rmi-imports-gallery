@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useCallback, useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { fetchAllProducts, isAdmin, uploadProductImage, type ProductRow } from "@/lib/catalog";
-import { categoryLabel, type Category } from "@/data/products";
+import { categoryLabel, climateLabel, type Category, type Climate } from "@/data/products";
 
 export const Route = createFileRoute("/admin")({
   head: () => ({
@@ -22,6 +22,7 @@ export const Route = createFileRoute("/admin")({
 
 const categories: Category[] = ["perfumes", "bodysplash", "cremes", "eletronicos"];
 const genders = ["", "masculino", "feminino", "unissex"] as const;
+const climates: Climate[] = ["calor", "frio", "versatil"];
 
 type Draft = {
   id?: string;
@@ -30,6 +31,7 @@ type Draft = {
   description: string;
   category: Category;
   gender: string;
+  climate: string;
   note_top: string;
   note_heart: string;
   note_base: string;
@@ -44,6 +46,7 @@ const emptyDraft: Draft = {
   description: "",
   category: "perfumes",
   gender: "",
+  climate: "",
   note_top: "",
   note_heart: "",
   note_base: "",
@@ -108,6 +111,7 @@ function AdminPage() {
         description: draft.description,
         category: draft.category,
         gender: draft.gender || null,
+        climate: draft.climate || null,
         note_top: draft.note_top || null,
         note_heart: draft.note_heart || null,
         note_base: draft.note_base || null,
@@ -143,6 +147,7 @@ function AdminPage() {
       description: row.description,
       category: row.category as Category,
       gender: row.gender ?? "",
+      climate: row.climate ?? "",
       note_top: row.note_top ?? "",
       note_heart: row.note_heart ?? "",
       note_base: row.note_base ?? "",
@@ -233,6 +238,12 @@ function AdminPage() {
                 <option key={g} value={g}>{g === "" ? "Sem gênero" : g}</option>
               ))}
             </select>
+            <select className={field} value={draft.climate} onChange={(e) => setDraft({ ...draft, climate: e.target.value })}>
+              <option value="">Sem clima</option>
+              {climates.map((c) => (
+                <option key={c} value={c}>{climateLabel[c]}</option>
+              ))}
+            </select>
             <textarea className={`${field} sm:col-span-2`} rows={2} placeholder="Descrição curta" value={draft.description} onChange={(e) => setDraft({ ...draft, description: e.target.value })} />
             <input className={field} placeholder="Notas de topo" value={draft.note_top} onChange={(e) => setDraft({ ...draft, note_top: e.target.value })} />
             <input className={field} placeholder="Notas de coração" value={draft.note_heart} onChange={(e) => setDraft({ ...draft, note_heart: e.target.value })} />
@@ -273,11 +284,15 @@ function AdminPage() {
                   <p className="truncate text-[12px] text-muted-foreground">
                     {row.brand} · {categoryLabel[row.category as Category] ?? row.category}
                     {row.gender ? ` · ${row.gender}` : ""}
+                    {row.climate ? ` · ${climateLabel[row.climate as Climate] ?? row.climate}` : ""}
+                  </p>
+                  <p className={`mt-1 text-[10px] uppercase tracking-[0.14em] ${row.published ? "text-gold" : "text-muted-foreground"}`}>
+                    {row.published ? "Publicado" : "Arquivado"}
                   </p>
                 </div>
                 <div className="flex shrink-0 gap-2">
                   <button type="button" onClick={() => togglePublished(row)} className={`rounded-full border px-3 py-1.5 text-[10px] uppercase tracking-[0.12em] ${row.published ? "border-gold text-foreground" : "border-border text-muted-foreground"}`}>
-                    {row.published ? "Publicado" : "Oculto"}
+                    {row.published ? "Arquivar" : "Publicar"}
                   </button>
                   <button type="button" onClick={() => edit(row)} className="rounded-full border border-border px-3 py-1.5 text-[10px] uppercase tracking-[0.12em] text-foreground">Editar</button>
                   <button type="button" onClick={() => remove(row)} className="rounded-full border border-border px-3 py-1.5 text-[10px] uppercase tracking-[0.12em] text-muted-foreground hover:text-foreground">Excluir</button>
