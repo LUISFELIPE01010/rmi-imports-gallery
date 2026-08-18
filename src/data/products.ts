@@ -5,19 +5,19 @@ import perfume4 from "@/assets/perfume-4.jpg";
 import watch1 from "@/assets/watch-1.jpg";
 import phone1 from "@/assets/phone-1.jpg";
 
-export type Category = "perfumes" | "relogios" | "celulares" | "outros";
+export type Category = "perfumes" | "bodysplash" | "cremes" | "eletronicos";
+export type Gender = "masculino" | "feminino" | "unissex";
 
 export type FilterId =
   | "all"
   | "perfumes"
-  | "masculino"
-  | "feminino"
-  | "unissex"
-  | "arabe"
-  | "europeu"
-  | "relogios"
-  | "celulares"
-  | "outros";
+  | "perfumes-masculino"
+  | "perfumes-feminino"
+  | "bodysplash"
+  | "bodysplash-masculino"
+  | "bodysplash-feminino"
+  | "cremes"
+  | "eletronicos";
 
 export interface FragranceNotes {
   top: string;
@@ -32,28 +32,58 @@ export interface Product {
   description: string;
   image: string;
   category: Category;
-  tags: FilterId[];
+  gender?: Gender;
   notes?: FragranceNotes;
 }
 
-export const filters: { id: FilterId; label: string }[] = [
+export interface FilterGroup {
+  id: FilterId;
+  label: string;
+  children?: { id: FilterId; label: string }[];
+}
+
+export const filterGroups: FilterGroup[] = [
   { id: "all", label: "Todos" },
-  { id: "perfumes", label: "Perfumes" },
-  { id: "masculino", label: "Masculino" },
-  { id: "feminino", label: "Feminino" },
-  { id: "unissex", label: "Unissex" },
-  { id: "arabe", label: "Árabe" },
-  { id: "europeu", label: "Europeu" },
-  { id: "relogios", label: "Relógios" },
-  { id: "celulares", label: "Celulares" },
-  { id: "outros", label: "Outros" },
+  {
+    id: "perfumes",
+    label: "Perfumes",
+    children: [
+      { id: "perfumes-masculino", label: "Masculino" },
+      { id: "perfumes-feminino", label: "Feminino" },
+    ],
+  },
+  {
+    id: "bodysplash",
+    label: "Bodysplash",
+    children: [
+      { id: "bodysplash-masculino", label: "Masculino" },
+      { id: "bodysplash-feminino", label: "Feminino" },
+    ],
+  },
+  { id: "cremes", label: "Cremes" },
+  { id: "eletronicos", label: "Eletrônicos" },
 ];
 
+export const matchesFilter = (product: Product, filter: FilterId) => {
+  if (filter === "all") return true;
+  const [category, gender] = filter.split("-") as [Category, Gender | undefined];
+  if (product.category !== category) return false;
+  if (gender) return product.gender === gender || product.gender === "unissex";
+  return true;
+};
+
+export const categoryLabel: Record<Category, string> = {
+  perfumes: "Perfume",
+  bodysplash: "Bodysplash",
+  cremes: "Creme",
+  eletronicos: "Eletrônico",
+};
+
 export const WHATSAPP_NUMBER = "5513999999999";
+export const INSTAGRAM_URL = "https://instagram.com/rmiimports";
 
 export const whatsappLink = (product: Product) => {
-  const kind = product.category === "perfumes" ? "no perfume" : "no produto";
-  const message = `Olá, tenho interesse ${kind} ${product.name}`;
+  const message = `Olá, tenho interesse no produto ${product.name}`;
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
 };
 
@@ -65,7 +95,7 @@ export const products: Product[] = [
     description: "Amadeirado oriental com base de oud e baunilha.",
     image: perfume4,
     category: "perfumes",
-    tags: ["unissex", "arabe"],
+    gender: "unissex",
     notes: {
       top: "Açafrão, Noz-moscada",
       heart: "Oud, Lavanda",
@@ -79,7 +109,7 @@ export const products: Product[] = [
     description: "Âmbar especiado com doçura amadeirada.",
     image: perfume1,
     category: "perfumes",
-    tags: ["masculino", "europeu"],
+    gender: "masculino",
     notes: {
       top: "Cardamomo, Açafrão",
       heart: "Flor de laranjeira, Jasmim",
@@ -93,7 +123,7 @@ export const products: Product[] = [
     description: "Fougère intenso com licorosa lavanda.",
     image: perfume2,
     category: "perfumes",
-    tags: ["masculino", "europeu"],
+    gender: "masculino",
     notes: {
       top: "Canela, Toranja",
       heart: "Lavanda, Alcaçuz",
@@ -107,7 +137,7 @@ export const products: Product[] = [
     description: "Abacaxi cremoso sobre tabaco e café.",
     image: perfume1,
     category: "perfumes",
-    tags: ["masculino", "arabe"],
+    gender: "masculino",
     notes: {
       top: "Abacaxi, Bergamota",
       heart: "Café, Tabaco",
@@ -121,7 +151,7 @@ export const products: Product[] = [
     description: "Floral frutado com fundo de baunilha.",
     image: perfume3,
     category: "perfumes",
-    tags: ["feminino", "arabe"],
+    gender: "feminino",
     notes: {
       top: "Framboesa, Pêra",
       heart: "Rosa, Íris",
@@ -135,7 +165,7 @@ export const products: Product[] = [
     description: "Buquê floral luminoso e sedoso.",
     image: perfume3,
     category: "perfumes",
-    tags: ["feminino", "europeu"],
+    gender: "feminino",
     notes: {
       top: "Bergamota, Limão",
       heart: "Rosa, Ylang-ylang",
@@ -149,7 +179,7 @@ export const products: Product[] = [
     description: "Rosa contemporânea com toque de couro.",
     image: perfume2,
     category: "perfumes",
-    tags: ["unissex", "europeu"],
+    gender: "unissex",
     notes: {
       top: "Pimenta rosa, Bergamota",
       heart: "Rosa, Íris",
@@ -163,7 +193,7 @@ export const products: Product[] = [
     description: "Tâmaras e especiarias em base gourmand.",
     image: perfume4,
     category: "perfumes",
-    tags: ["unissex", "arabe"],
+    gender: "unissex",
     notes: {
       top: "Canela, Noz-moscada",
       heart: "Tâmara, Praliné",
@@ -171,13 +201,39 @@ export const products: Product[] = [
     },
   },
   {
+    id: "splash-blue",
+    brand: "Victoria's Secret",
+    name: "Body Splash Blue Rush",
+    description: "Refrescante e cítrico para o dia a dia.",
+    image: perfume2,
+    category: "bodysplash",
+    gender: "masculino",
+  },
+  {
+    id: "splash-berry",
+    brand: "Victoria's Secret",
+    name: "Body Splash Velvet Petals",
+    description: "Doce e floral, fixação leve e marcante.",
+    image: perfume3,
+    category: "bodysplash",
+    gender: "feminino",
+  },
+  {
+    id: "creme-hidratante",
+    brand: "Bath & Body Works",
+    name: "Creme Hidratante Champagne Toast",
+    description: "Hidratação intensa com perfume prolongado.",
+    image: perfume1,
+    category: "cremes",
+    gender: "unissex",
+  },
+  {
     id: "watch-gold",
     brand: "Aurum",
     name: "Chronos Gold 41mm",
     description: "Aço banhado a ouro com mostrador negro.",
     image: watch1,
-    category: "relogios",
-    tags: ["relogios"],
+    category: "eletronicos",
   },
   {
     id: "phone-titan",
@@ -185,7 +241,6 @@ export const products: Product[] = [
     name: "iPhone 16 Pro 256GB",
     description: "Titânio natural, lacrado e desbloqueado.",
     image: phone1,
-    category: "celulares",
-    tags: ["celulares"],
+    category: "eletronicos",
   },
 ];
