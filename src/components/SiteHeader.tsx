@@ -11,21 +11,23 @@ export function SiteHeader() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-accent/30 bg-background/80 backdrop-blur-md">
-      <div className="mx-auto grid max-w-7xl grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-6 py-5">
-        <a
-          href="#top"
-          className="min-w-0 truncate font-serif text-lg tracking-[0.35em] text-foreground"
-        >
-          RMI IMPORTS
+    <header className="fixed inset-x-0 top-0 z-50 border-b border-border bg-background/75 backdrop-blur-xl">
+      <div className="mx-auto grid max-w-7xl grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-6 py-4">
+        <a href="#top" className="min-w-0 truncate">
+          <span className="font-display text-lg font-extrabold uppercase tracking-[-0.02em] text-foreground">
+            RMI
+          </span>
+          <span className="ml-2 text-[11px] uppercase tracking-[0.34em] text-muted-foreground">
+            Imports
+          </span>
         </a>
 
-        <nav className="hidden items-center gap-8 md:flex">
+        <nav className="hidden items-center gap-2 md:flex">
           {links.map((l) => (
             <a
               key={l.href}
               href={l.href}
-              className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground transition-colors hover:text-accent"
+              className="rounded-full px-4 py-2 text-[11px] font-medium uppercase tracking-[0.16em] text-muted-foreground transition-colors duration-300 hover:bg-secondary hover:text-foreground"
             >
               {l.label}
             </a>
@@ -37,13 +39,13 @@ export function SiteHeader() {
           aria-label="Abrir menu"
           aria-expanded={open}
           onClick={() => setOpen((v) => !v)}
-          className="flex h-8 w-8 shrink-0 flex-col items-center justify-center gap-1.5 md:hidden"
+          className="flex h-9 w-9 shrink-0 flex-col items-center justify-center gap-1.5 rounded-full border border-border md:hidden"
         >
           <span
-            className={`h-px w-5 bg-accent transition-transform duration-300 ${open ? "translate-y-[3px] rotate-45" : ""}`}
+            className={`h-px w-4 bg-foreground transition-transform duration-300 ${open ? "translate-y-[3px] rotate-45" : ""}`}
           />
           <span
-            className={`h-px w-5 bg-accent transition-transform duration-300 ${open ? "-translate-y-[3px] -rotate-45" : ""}`}
+            className={`h-px w-4 bg-foreground transition-transform duration-300 ${open ? "-translate-y-[3px] -rotate-45" : ""}`}
           />
         </button>
       </div>
@@ -53,13 +55,13 @@ export function SiteHeader() {
           open ? "max-h-64 opacity-100" : "max-h-0 opacity-0"
         }`}
       >
-        <nav className="flex flex-col gap-5 px-6 py-6">
+        <nav className="flex flex-col gap-4 px-6 py-6">
           {links.map((l) => (
             <a
               key={l.href}
               href={l.href}
               onClick={() => setOpen(false)}
-              className="text-xs uppercase tracking-[0.25em] text-muted-foreground transition-colors hover:text-accent"
+              className="font-display text-lg font-bold uppercase tracking-tight text-foreground transition-colors hover:text-accent"
             >
               {l.label}
             </a>
