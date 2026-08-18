@@ -9,6 +9,7 @@ export type Category = "perfumes" | "relogios" | "celulares" | "outros";
 
 export type FilterId =
   | "all"
+  | "perfumes"
   | "masculino"
   | "feminino"
   | "unissex"
@@ -36,7 +37,8 @@ export interface Product {
 }
 
 export const filters: { id: FilterId; label: string }[] = [
-  { id: "all", label: "All" },
+  { id: "all", label: "Todos" },
+  { id: "perfumes", label: "Perfumes" },
   { id: "masculino", label: "Masculino" },
   { id: "feminino", label: "Feminino" },
   { id: "unissex", label: "Unissex" },

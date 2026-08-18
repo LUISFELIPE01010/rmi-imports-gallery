@@ -65,7 +65,7 @@ export function ProductCard({ product, index }: { product: Product; index: numbe
 
       <div className="flex flex-1 flex-col gap-3 border-t border-border p-6">
         <p className="eyebrow text-muted-foreground">{product.brand}</p>
-        <h3 className="font-display text-2xl font-medium leading-tight text-foreground">
+        <h3 className="font-display text-lg font-bold tracking-tight leading-tight text-foreground">
           {product.name}
         </h3>
         <p className="text-[13px] leading-relaxed text-muted-foreground">{product.description}</p>
