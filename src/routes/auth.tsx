@@ -17,10 +17,11 @@ export const Route = createFileRoute("/auth")({
   component: AuthPage,
 });
 
+const EMAIL_DOMAIN = "rmiimports.app";
+
 function AuthPage() {
   const navigate = useNavigate();
-  const [mode, setMode] = useState<"login" | "signup">("login");
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [msg, setMsg] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -36,22 +37,13 @@ function AuthPage() {
     setLoading(true);
     setMsg(null);
     try {
-      if (mode === "signup") {
-        const { error } = await supabase.auth.signUp({
-          email,
-          password,
-          options: { emailRedirectTo: `${window.location.origin}/admin` },
-        });
-        if (error) throw error;
-        setMsg("Conta criada. Se pedir confirmação, verifique seu e-mail e depois entre.");
-        setMode("login");
-      } else {
-        const { error } = await supabase.auth.signInWithPassword({ email, password });
-        if (error) throw error;
-        navigate({ to: "/admin" });
-      }
-    } catch (err) {
-      setMsg(err instanceof Error ? err.message : "Erro inesperado");
+      const user = username.trim().toLowerCase();
+      const email = user.includes("@") ? user : `${user}@${EMAIL_DOMAIN}`;
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) throw error;
+      navigate({ to: "/admin" });
+    } catch {
+      setMsg("Usuário ou senha inválidos.");
     } finally {
       setLoading(false);
     }
@@ -61,23 +53,22 @@ function AuthPage() {
     <div className="flex min-h-screen items-center justify-center bg-background px-5">
       <div className="w-full max-w-sm rounded-3xl border border-border bg-card p-8 shadow-soft">
         <p className="eyebrow text-gold">RMI Imports</p>
-        <h1 className="mt-3 text-2xl font-bold tracking-tight text-foreground">
-          {mode === "login" ? "Entrar no painel" : "Criar conta admin"}
-        </h1>
+        <h1 className="mt-3 text-2xl font-bold tracking-tight text-foreground">Entrar no painel</h1>
 
         <form onSubmit={submit} className="mt-6 space-y-3">
           <input
-            type="email"
+            type="text"
             required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="E-mail"
+            autoComplete="username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            placeholder="Usuário"
             className="w-full rounded-xl border border-border bg-background px-4 py-3 text-sm text-foreground outline-none focus:border-gold"
           />
           <input
             type="password"
             required
-            minLength={6}
+            autoComplete="current-password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Senha"
@@ -88,20 +79,13 @@ function AuthPage() {
             disabled={loading}
             className="w-full rounded-full bg-ink px-6 py-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-background transition-colors hover:bg-gold disabled:opacity-60"
           >
-            {loading ? "Aguarde..." : mode === "login" ? "Entrar" : "Criar conta"}
+            {loading ? "Aguarde..." : "Entrar"}
           </button>
         </form>
 
         {msg && <p className="mt-4 text-[12px] leading-relaxed text-muted-foreground">{msg}</p>}
-
-        <button
-          type="button"
-          onClick={() => setMode(mode === "login" ? "signup" : "login")}
-          className="mt-5 text-[11px] uppercase tracking-[0.14em] text-muted-foreground hover:text-foreground"
-        >
-          {mode === "login" ? "Criar conta" : "Já tenho conta"}
-        </button>
       </div>
     </div>
   );
 }
+
