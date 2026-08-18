@@ -19,7 +19,7 @@ export function Hero() {
             Curadoria RMI
           </span>
 
-          <h1 className="display-tight mt-8 text-[clamp(2.6rem,8vw,6.5rem)] text-foreground">
+          <h1 className="display-tight mt-8 max-w-[15ch] text-[clamp(2.4rem,6vw,5rem)] text-foreground">
             Importados
             <br />
             <span className="text-accent">com exclusividade</span>
