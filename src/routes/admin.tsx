@@ -73,20 +73,26 @@ function AdminPage() {
 
   useEffect(() => {
     (async () => {
-      const { data } = await supabase.auth.getSession();
-      if (!data.session) {
-        navigate({ to: "/auth" });
-        return;
+      try {
+        const { data } = await supabase.auth.getSession();
+        if (!data.session) {
+          navigate({ to: "/auth" });
+          return;
+        }
+        const admin = await isAdmin(data.session.user.id);
+        if (!admin) {
+          setStatus("denied");
+          return;
+        }
+        await load();
+        setStatus("ok");
+      } catch (err) {
+        setMsg(err instanceof Error ? err.message : "Erro ao carregar produtos");
+        setStatus("ok");
       }
-      const admin = await isAdmin(data.session.user.id);
-      if (!admin) {
-        setStatus("denied");
-        return;
-      }
-      await load();
-      setStatus("ok");
     })();
   }, [load, navigate]);
+
 
   const save = async (e: React.FormEvent) => {
     e.preventDefault();
