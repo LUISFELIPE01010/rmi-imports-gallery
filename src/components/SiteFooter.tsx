@@ -20,7 +20,7 @@ export function SiteFooter() {
     <footer id="contato" className="bg-ink">
       <div className="mx-auto grid max-w-7xl gap-12 px-5 py-16 sm:px-8 lg:grid-cols-[1.2fr_2fr]">
         <div>
-          <p className="font-display text-3xl tracking-[0.16em] text-background">RMI</p>
+          <p className="font-display text-3xl font-extrabold tracking-[-0.02em] text-background">RMI</p>
           <p className="eyebrow mt-1 text-gold">imports</p>
           <p className="mt-6 max-w-xs text-sm leading-relaxed text-background/55">
             Importados originais com curadoria pessoal. Consulte disponibilidade e valores

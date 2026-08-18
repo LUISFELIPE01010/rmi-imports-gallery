@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { WHATSAPP_NUMBER } from "@/data/products";
 
 const links = [
-  { href: "#catalogo", label: "Perfumes" },
-  { href: "#colecoes", label: "Coleções" },
+  { href: "#catalogo", label: "Catálogo" },
+  { href: "#colecoes", label: "Categorias" },
   { href: "#sobre", label: "Sobre" },
   { href: "#contato", label: "Contato" },
 ];
@@ -29,7 +29,7 @@ export function SiteHeader() {
     >
       <div className="mx-auto flex h-[72px] max-w-7xl items-center justify-between px-5 sm:px-8">
         <a href="#top" className="group flex flex-col leading-none">
-          <span className="font-display text-2xl font-medium tracking-[0.18em] text-background">
+          <span className="font-display text-2xl font-extrabold tracking-[-0.02em] text-background">
             RMI
           </span>
           <span className="eyebrow mt-0.5 text-[8px] tracking-[0.42em] text-gold">imports</span>
@@ -85,7 +85,7 @@ export function SiteHeader() {
               key={l.href}
               href={l.href}
               onClick={() => setOpen(false)}
-              className="border-b border-ink-soft/50 py-3.5 font-display text-xl text-background/85 last:border-0"
+              className="border-b border-ink-soft/50 py-3.5 font-display text-xl font-semibold text-background/85 last:border-0"
             >
               {l.label}
             </a>
