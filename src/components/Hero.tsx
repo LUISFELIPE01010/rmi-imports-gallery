@@ -1,64 +1,89 @@
-const marquee = [
-  "Perfumes importados",
-  "Relógios",
-  "Celulares",
-  "Entrega para todo o Brasil",
-  "100% originais",
-];
+import heroModel from "@/assets/hero-model.jpg";
+import { WHATSAPP_NUMBER } from "@/data/products";
+
+const press = ["GQ", "VOGUE", "Forbes", "Esquire", "HYPEBEAST"];
 
 export function Hero() {
   return (
-    <section id="top" className="relative overflow-hidden bg-background pt-24">
-      <div className="hero-aurora pointer-events-none absolute inset-0" aria-hidden="true" />
-      <div className="hero-shimmer pointer-events-none absolute inset-0" aria-hidden="true" />
+    <section id="top" className="relative isolate overflow-hidden bg-ink">
+      <img
+        src={heroModel}
+        alt="Homem elegante aplicando perfume importado"
+        width={1280}
+        height={1280}
+        fetchPriority="high"
+        decoding="async"
+        className="absolute inset-0 h-full w-full object-cover object-[70%_center] opacity-90"
+      />
+      <div
+        className="absolute inset-0 bg-gradient-to-r from-ink via-ink/85 to-ink/10"
+        aria-hidden="true"
+      />
+      <div
+        className="absolute inset-0 bg-gradient-to-t from-ink via-transparent to-ink/70"
+        aria-hidden="true"
+      />
+      <div className="gold-sheen pointer-events-none absolute inset-0" aria-hidden="true" />
 
-      <div className="relative mx-auto grid max-w-7xl gap-10 px-6 py-24 sm:py-32 lg:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)] lg:items-end lg:py-40">
-        <div className="min-w-0">
-          <span className="inline-flex items-center gap-2 rounded-full border border-accent/40 bg-card/70 px-4 py-1.5 text-[11px] font-medium uppercase tracking-[0.22em] text-accent backdrop-blur">
-            <span className="h-1.5 w-1.5 rounded-full bg-accent" />
-            Curadoria RMI
-          </span>
+      <div className="relative mx-auto flex min-h-[92vh] max-w-7xl flex-col justify-end px-5 pb-14 pt-32 sm:px-8 sm:pb-20 lg:min-h-[88vh]">
+        <div className="max-w-2xl rise-in">
+          <p className="eyebrow text-gold">Curadoria RMI</p>
 
-          <h1 className="display-tight mt-8 max-w-[15ch] text-[clamp(2.4rem,6vw,5rem)] text-foreground">
+          <h1 className="display-serif mt-5 text-[clamp(2.8rem,8.5vw,5.6rem)] text-background">
             Importados
             <br />
-            <span className="text-accent">com exclusividade</span>
+            <span className="italic text-gold">com exclusividade.</span>
           </h1>
 
-          <p className="mt-8 max-w-md text-sm leading-relaxed text-muted-foreground">
-            Seleção limitada de fragrâncias, relógios e eletrônicos originais.
+          <p className="mt-7 max-w-md text-sm leading-relaxed text-background/65 sm:text-base">
+            Fragrâncias raras, relógios e eletrônicos selecionados peça a peça. Originais,
+            lacrados e entregues com discrição.
           </p>
-        </div>
 
-        <div className="grid grid-cols-3 gap-4 lg:mb-4">
-          {[
-            { n: "10+", l: "Produtos" },
-            { n: "100%", l: "Originais" },
-            { n: "24h", l: "Resposta" },
-          ].map((s) => (
-            <div
-              key={s.l}
-              className="rounded-2xl border border-border bg-card/80 p-4 backdrop-blur transition-shadow duration-300 hover:shadow-soft"
+          <div className="mt-9 flex flex-wrap items-center gap-4">
+            <a
+              href="#catalogo"
+              className="group inline-flex items-center gap-3 rounded-sm bg-gold px-7 py-3.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-ink transition-all duration-300 hover:bg-gold-soft"
             >
-              <p className="font-display text-2xl font-extrabold tracking-tight text-foreground">
-                {s.n}
-              </p>
-              <p className="mt-1 text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
-                {s.l}
-              </p>
+              Ver catálogo
+              <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+            </a>
+            <a
+              href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Olá, quero uma indicação de fragrância")}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="border-b border-background/40 pb-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-background transition-colors duration-300 hover:border-gold hover:text-gold"
+            >
+              Falar no WhatsApp
+            </a>
+          </div>
+
+          <div className="mt-12 flex items-center gap-4">
+            <div className="flex -space-x-2">
+              {["#8c6a4a", "#4a5a6b", "#6b4a5a"].map((c) => (
+                <span
+                  key={c}
+                  style={{ backgroundColor: c }}
+                  className="h-8 w-8 rounded-full border-2 border-ink"
+                />
+              ))}
             </div>
-          ))}
+            <p className="text-[11px] leading-snug text-background/60">
+              <span className="block font-semibold text-background">Centenas de clientes</span>
+              atendidos em todo o Brasil
+            </p>
+          </div>
         </div>
       </div>
 
-      <div className="relative overflow-hidden border-y border-border bg-primary py-3">
-        <div className="marquee-track flex w-max gap-10 whitespace-nowrap">
-          {[...marquee, ...marquee, ...marquee, ...marquee].map((t, i) => (
+      <div className="relative border-t border-background/10">
+        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-6 px-5 py-6 sm:px-8">
+          {press.map((p) => (
             <span
-              key={i}
-              className="text-[11px] font-medium uppercase tracking-[0.3em] text-primary-foreground/80"
+              key={p}
+              className="font-display text-lg tracking-[0.15em] text-background/35 transition-colors duration-300 hover:text-background/70 sm:text-xl"
             >
-              {t} <span className="text-accent">·</span>
+              {p}
             </span>
           ))}
         </div>
