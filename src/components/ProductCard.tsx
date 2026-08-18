@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { type Product, whatsappLink } from "@/data/products";
+import { categoryLabel, type Product, whatsappLink } from "@/data/products";
 
 function WhatsAppIcon() {
   return (
@@ -42,13 +42,13 @@ export function ProductCard({ product, index }: { product: Product; index: numbe
     <article
       ref={ref}
       style={{ transitionDelay: `${(index % 4) * 70}ms` }}
-      className={`group flex flex-col border border-border bg-card transition-all duration-700 ease-out hover:-translate-y-1 hover:shadow-lift ${
+      className={`group flex flex-col overflow-hidden rounded-3xl border border-border bg-card transition-all duration-700 ease-out hover:-translate-y-1 hover:shadow-lift ${
         visible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
       }`}
     >
-      <div className="relative flex aspect-[4/5] items-center justify-center overflow-hidden bg-sand">
-        <span className="absolute left-4 top-4 z-10 bg-ink/85 px-3 py-1 text-[9px] font-semibold uppercase tracking-[0.18em] text-gold">
-          {product.category === "perfumes" ? "Fragrância" : "Importado"}
+      <div className="relative flex aspect-[4/5] items-center justify-center overflow-hidden rounded-3xl bg-sand">
+        <span className="absolute left-4 top-4 z-10 rounded-full bg-ink/85 px-3 py-1 text-[9px] font-semibold uppercase tracking-[0.18em] text-gold">
+          {categoryLabel[product.category]}
         </span>
         <img
           src={product.image}
@@ -82,7 +82,7 @@ export function ProductCard({ product, index }: { product: Product; index: numbe
           href={whatsappLink(product)}
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-auto inline-flex items-center justify-center gap-2 border border-ink bg-ink px-4 py-3.5 pt-3.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-background transition-all duration-300 hover:border-gold hover:bg-gold hover:text-ink"
+          className="mt-auto inline-flex items-center justify-center gap-2 rounded-full border border-ink bg-ink px-4 py-3.5 pt-3.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-background transition-all duration-300 hover:border-gold hover:bg-gold hover:text-ink"
         >
           <WhatsAppIcon />
           Consultar
