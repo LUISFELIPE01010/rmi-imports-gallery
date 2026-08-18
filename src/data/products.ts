@@ -5,7 +5,14 @@ import perfume4 from "@/assets/perfume-4.jpg";
 import watch1 from "@/assets/watch-1.jpg";
 import phone1 from "@/assets/phone-1.jpg";
 
-export type Category = "perfumes" | "bodysplash" | "cremes" | "eletronicos";
+export type Category =
+  | "perfumes"
+  | "bodysplash"
+  | "cremes"
+  | "eletronicos"
+  | "kits"
+  | "colecoes"
+  | "diversos";
 export type Gender = "masculino" | "feminino" | "unissex";
 export type Climate = "calor" | "frio" | "versatil";
 
@@ -24,7 +31,10 @@ export type FilterId =
   | "bodysplash-masculino"
   | "bodysplash-feminino"
   | "cremes"
-  | "eletronicos";
+  | "eletronicos"
+  | "kits"
+  | "colecoes"
+  | "diversos";
 
 export interface FragranceNotes {
   top: string;
@@ -71,6 +81,9 @@ export const filterGroups: FilterGroup[] = [
   },
   { id: "cremes", label: "Cremes" },
   { id: "eletronicos", label: "Eletrônicos" },
+  { id: "kits", label: "Kits" },
+  { id: "colecoes", label: "Coleções" },
+  { id: "diversos", label: "Diversos" },
 ];
 
 export const matchesFilter = (product: Product, filter: FilterId) => {
@@ -86,6 +99,9 @@ export const categoryLabel: Record<Category, string> = {
   bodysplash: "Bodysplash",
   cremes: "Creme",
   eletronicos: "Eletrônico",
+  kits: "Kit",
+  colecoes: "Coleção",
+  diversos: "Diversos",
 };
 
 export const WHATSAPP_NUMBER = "5513996018936";

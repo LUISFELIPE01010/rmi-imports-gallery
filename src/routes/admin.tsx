@@ -27,7 +27,15 @@ export const Route = createFileRoute("/admin")({
   component: AdminPage,
 });
 
-const categories: Category[] = ["perfumes", "bodysplash", "cremes", "eletronicos"];
+const categories: Category[] = [
+  "perfumes",
+  "bodysplash",
+  "cremes",
+  "eletronicos",
+  "kits",
+  "colecoes",
+  "diversos",
+];
 const genders = ["", "masculino", "feminino", "unissex"] as const;
 const climates: Climate[] = ["calor", "frio", "versatil"];
 
