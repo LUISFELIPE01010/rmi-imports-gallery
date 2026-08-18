@@ -97,6 +97,12 @@ export function ProductCard({ product, index }: { product: Product; index: numbe
           {product.description}
         </p>
 
+        {typeof product.price === "number" && (
+          <p className="font-display text-base font-bold tracking-tight text-foreground sm:text-lg">
+            {formatPrice(product.price)}
+          </p>
+        )}
+
         {product.climate && (
           <div className="flex flex-wrap gap-1.5 sm:gap-2">
             <ClimateBadge climate={product.climate} />
