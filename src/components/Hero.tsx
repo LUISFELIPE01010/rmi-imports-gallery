@@ -23,7 +23,7 @@ export function Hero() {
       />
       <div className="gold-sheen pointer-events-none absolute inset-0" aria-hidden="true" />
 
-      <div className="relative mx-auto flex min-h-[92vh] max-w-7xl flex-col justify-end px-5 pb-14 pt-32 sm:px-8 sm:pb-20 lg:min-h-[88vh]">
+      <div className="relative mx-auto flex min-h-[72vh] max-w-7xl flex-col justify-end px-5 pb-12 pt-28 sm:px-8 sm:pb-16 sm:pt-32 lg:min-h-[66vh]">
         <div className="max-w-2xl rise-in">
           <p className="eyebrow text-gold">RMI Imports</p>
 
