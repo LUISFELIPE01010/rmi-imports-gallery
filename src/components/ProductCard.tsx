@@ -90,7 +90,6 @@ function ExpandableDescription({ product }: { product: Product }) {
 export function ProductCard({ product, index }: { product: Product; index: number }) {
   const ref = useRef<HTMLElement | null>(null);
   const [visible, setVisible] = useState(false);
-  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     const el = ref.current;
