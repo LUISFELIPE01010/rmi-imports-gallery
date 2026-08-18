@@ -71,14 +71,18 @@ const feedbacks = [
 function Index() {
   const [active, setActive] = useState<FilterId>("all");
   const [remote, setRemote] = useState<Product[] | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let alive = true;
     fetchPublishedProducts()
       .then((list) => {
-        if (alive && list.length > 0) setRemote(list);
+        if (alive) setRemote(list);
       })
-      .catch(() => undefined);
+      .catch(() => undefined)
+      .finally(() => {
+        if (alive) setLoading(false);
+      });
     return () => {
       alive = false;
     };
