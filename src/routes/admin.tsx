@@ -1,8 +1,15 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { fetchAllProducts, isAdmin, uploadProductImage, type ProductRow } from "@/lib/catalog";
-import { categoryLabel, climateLabel, type Category, type Climate } from "@/data/products";
+import {
+  categoryLabel,
+  climateLabel,
+  filterGroups,
+  type Category,
+  type Climate,
+  type FilterId,
+} from "@/data/products";
 
 export const Route = createFileRoute("/admin")({
   head: () => ({
@@ -37,6 +44,7 @@ type Draft = {
   note_base: string;
   sort_order: number;
   published: boolean;
+  sold_out: boolean;
   image_path: string | null;
 };
 
@@ -52,11 +60,20 @@ const emptyDraft: Draft = {
   note_base: "",
   sort_order: 0,
   published: true,
+  sold_out: false,
   image_path: null,
 };
 
 const field =
-  "w-full rounded-xl border border-border bg-background px-4 py-2.5 text-sm text-foreground outline-none focus:border-gold";
+  "w-full rounded-xl border border-border bg-background px-4 py-3 text-base text-foreground outline-none focus:border-gold sm:py-2.5 sm:text-sm";
+
+const rowMatchesFilter = (row: ProductRow, filter: FilterId) => {
+  if (filter === "all") return true;
+  const [category, gender] = filter.split("-");
+  if (row.category !== category) return false;
+  if (gender) return row.gender === gender || row.gender === "unissex";
+  return true;
+};
 
 function AdminPage() {
   const navigate = useNavigate();
@@ -67,6 +84,9 @@ function AdminPage() {
   const [file, setFile] = useState<File | null>(null);
   const [saving, setSaving] = useState(false);
   const [msg, setMsg] = useState<string | null>(null);
+  const [filter, setFilter] = useState<FilterId>("all");
+  const [search, setSearch] = useState("");
+  const [formOpen, setFormOpen] = useState(false);
 
   const load = useCallback(async () => {
     const { rows: r, urls: u } = await fetchAllProducts();
@@ -96,6 +116,18 @@ function AdminPage() {
     })();
   }, [load, navigate]);
 
+  const activeGroup = filterGroups.find(
+    (g) => g.id === filter || g.children?.some((c) => c.id === filter),
+  );
+
+  const visibleRows = useMemo(() => {
+    const term = search.trim().toLowerCase();
+    return rows.filter((row) => {
+      if (!rowMatchesFilter(row, filter)) return false;
+      if (!term) return true;
+      return `${row.brand} ${row.name}`.toLowerCase().includes(term);
+    });
+  }, [rows, filter, search]);
 
   const save = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -117,6 +149,7 @@ function AdminPage() {
         note_base: draft.note_base || null,
         sort_order: Number(draft.sort_order) || 0,
         published: draft.published,
+        sold_out: draft.sold_out,
         image_path: imagePath,
       };
 
@@ -130,6 +163,7 @@ function AdminPage() {
 
       setDraft(emptyDraft);
       setFile(null);
+      setFormOpen(false);
       setMsg("Produto salvo com sucesso.");
       await load();
     } catch (err) {
@@ -153,9 +187,11 @@ function AdminPage() {
       note_base: row.note_base ?? "",
       sort_order: row.sort_order,
       published: row.published,
+      sold_out: row.sold_out ?? false,
       image_path: row.image_path,
     });
     setFile(null);
+    setFormOpen(true);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -167,6 +203,11 @@ function AdminPage() {
 
   const togglePublished = async (row: ProductRow) => {
     await supabase.from("products").update({ published: !row.published }).eq("id", row.id);
+    await load();
+  };
+
+  const toggleSoldOut = async (row: ProductRow) => {
+    await supabase.from("products").update({ sold_out: !row.sold_out }).eq("id", row.id);
     await load();
   };
 
@@ -192,20 +233,25 @@ function AdminPage() {
     );
   }
 
+  const pill = (active: boolean) =>
+    `shrink-0 rounded-full border px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.12em] transition-colors ${
+      active ? "border-ink bg-ink text-background" : "border-border bg-card text-muted-foreground"
+    }`;
+
   return (
-    <div className="min-h-screen bg-background px-5 py-10 sm:px-8">
-      <div className="mx-auto max-w-6xl">
-        <header className="flex flex-wrap items-center justify-between gap-4">
-          <div>
+    <div className="min-h-screen bg-background pb-24 sm:pb-12">
+      <header className="sticky top-0 z-30 border-b border-border bg-background/95 backdrop-blur">
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-8 sm:py-4">
+          <div className="min-w-0">
             <p className="eyebrow text-gold">Painel</p>
-            <h1 className="mt-2 text-3xl font-bold tracking-tight text-foreground">Catálogo RMI Imports</h1>
+            <h1 className="truncate text-lg font-bold tracking-tight text-foreground sm:text-2xl">RMI Imports</h1>
           </div>
-          <div className="flex gap-3">
+          <div className="flex shrink-0 gap-2">
             <a
               href="/"
-              className="rounded-full border border-border px-5 py-2.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-foreground"
+              className="rounded-full border border-border px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.12em] text-foreground sm:px-5 sm:text-[11px]"
             >
-              Ver site
+              Site
             </a>
             <button
               type="button"
@@ -213,95 +259,174 @@ function AdminPage() {
                 await supabase.auth.signOut();
                 navigate({ to: "/auth" });
               }}
-              className="rounded-full bg-ink px-5 py-2.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-background"
+              className="rounded-full bg-ink px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.12em] text-background sm:px-5 sm:text-[11px]"
             >
               Sair
             </button>
           </div>
-        </header>
+        </div>
+      </header>
 
-        <form onSubmit={save} className="mt-8 rounded-3xl border border-border bg-card p-6 shadow-soft">
-          <h2 className="text-lg font-bold text-foreground">
-            {draft.id ? "Editar produto" : "Novo produto"}
+      <div className="mx-auto max-w-6xl px-4 sm:px-8">
+        <div className="mt-5 flex items-center justify-between gap-3">
+          <h2 className="text-sm font-semibold text-foreground">
+            {draft.id ? "Editando produto" : "Novo produto"}
           </h2>
+          <button
+            type="button"
+            onClick={() => {
+              if (formOpen && draft.id) {
+                setDraft(emptyDraft);
+                setFile(null);
+              }
+              setFormOpen((v) => !v);
+            }}
+            className="rounded-full border border-border px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.12em] text-foreground"
+          >
+            {formOpen ? "Fechar" : "Abrir"}
+          </button>
+        </div>
 
-          <div className="mt-5 grid gap-3 sm:grid-cols-2">
-            <input className={field} placeholder="Marca" value={draft.brand} onChange={(e) => setDraft({ ...draft, brand: e.target.value })} />
-            <input className={field} required placeholder="Nome do produto" value={draft.name} onChange={(e) => setDraft({ ...draft, name: e.target.value })} />
-            <select className={field} value={draft.category} onChange={(e) => setDraft({ ...draft, category: e.target.value as Category })}>
-              {categories.map((c) => (
-                <option key={c} value={c}>{categoryLabel[c]}</option>
-              ))}
-            </select>
-            <select className={field} value={draft.gender} onChange={(e) => setDraft({ ...draft, gender: e.target.value })}>
-              {genders.map((g) => (
-                <option key={g} value={g}>{g === "" ? "Sem gênero" : g}</option>
-              ))}
-            </select>
-            <select className={field} value={draft.climate} onChange={(e) => setDraft({ ...draft, climate: e.target.value })}>
-              <option value="">Sem clima</option>
-              {climates.map((c) => (
-                <option key={c} value={c}>{climateLabel[c]}</option>
-              ))}
-            </select>
-            <textarea className={`${field} sm:col-span-2`} rows={2} placeholder="Descrição curta" value={draft.description} onChange={(e) => setDraft({ ...draft, description: e.target.value })} />
-            <input className={field} placeholder="Notas de topo" value={draft.note_top} onChange={(e) => setDraft({ ...draft, note_top: e.target.value })} />
-            <input className={field} placeholder="Notas de coração" value={draft.note_heart} onChange={(e) => setDraft({ ...draft, note_heart: e.target.value })} />
-            <input className={field} placeholder="Notas de fundo" value={draft.note_base} onChange={(e) => setDraft({ ...draft, note_base: e.target.value })} />
-            <input className={field} type="number" placeholder="Ordem" value={draft.sort_order} onChange={(e) => setDraft({ ...draft, sort_order: Number(e.target.value) })} />
-            <input className={field} type="file" accept="image/*" onChange={(e) => setFile(e.target.files?.[0] ?? null)} />
-            <label className="flex items-center gap-2 text-sm text-foreground">
-              <input type="checkbox" checked={draft.published} onChange={(e) => setDraft({ ...draft, published: e.target.checked })} />
-              Publicado no site
-            </label>
-          </div>
+        {formOpen && (
+          <form onSubmit={save} className="mt-3 rounded-3xl border border-border bg-card p-4 shadow-soft sm:p-6">
+            <div className="grid gap-3 sm:grid-cols-2">
+              <input className={field} placeholder="Marca" value={draft.brand} onChange={(e) => setDraft({ ...draft, brand: e.target.value })} />
+              <input className={field} required placeholder="Nome do produto" value={draft.name} onChange={(e) => setDraft({ ...draft, name: e.target.value })} />
+              <select className={field} value={draft.category} onChange={(e) => setDraft({ ...draft, category: e.target.value as Category })}>
+                {categories.map((c) => (
+                  <option key={c} value={c}>{categoryLabel[c]}</option>
+                ))}
+              </select>
+              <select className={field} value={draft.gender} onChange={(e) => setDraft({ ...draft, gender: e.target.value })}>
+                {genders.map((g) => (
+                  <option key={g} value={g}>{g === "" ? "Sem gênero" : g}</option>
+                ))}
+              </select>
+              <select className={field} value={draft.climate} onChange={(e) => setDraft({ ...draft, climate: e.target.value })}>
+                <option value="">Sem clima</option>
+                {climates.map((c) => (
+                  <option key={c} value={c}>{climateLabel[c]}</option>
+                ))}
+              </select>
+              <input className={field} type="number" placeholder="Ordem" value={draft.sort_order} onChange={(e) => setDraft({ ...draft, sort_order: Number(e.target.value) })} />
+              <textarea className={`${field} sm:col-span-2`} rows={2} placeholder="Descrição curta" value={draft.description} onChange={(e) => setDraft({ ...draft, description: e.target.value })} />
+              <input className={field} placeholder="Notas de topo" value={draft.note_top} onChange={(e) => setDraft({ ...draft, note_top: e.target.value })} />
+              <input className={field} placeholder="Notas de coração" value={draft.note_heart} onChange={(e) => setDraft({ ...draft, note_heart: e.target.value })} />
+              <input className={`${field} sm:col-span-2`} placeholder="Notas de fundo" value={draft.note_base} onChange={(e) => setDraft({ ...draft, note_base: e.target.value })} />
+              <input className={`${field} sm:col-span-2`} type="file" accept="image/*" onChange={(e) => setFile(e.target.files?.[0] ?? null)} />
 
-          <div className="mt-5 flex flex-wrap gap-3">
-            <button type="submit" disabled={saving} className="rounded-full bg-ink px-6 py-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-background transition-colors hover:bg-gold disabled:opacity-60">
-              {saving ? "Salvando..." : draft.id ? "Salvar alterações" : "Adicionar produto"}
-            </button>
-            {draft.id && (
-              <button type="button" onClick={() => { setDraft(emptyDraft); setFile(null); }} className="rounded-full border border-border px-6 py-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-foreground">
-                Cancelar
+              <label className="flex items-center justify-between gap-3 rounded-xl border border-border px-4 py-3 text-sm text-foreground">
+                Publicado no site
+                <input className="h-5 w-5" type="checkbox" checked={draft.published} onChange={(e) => setDraft({ ...draft, published: e.target.checked })} />
+              </label>
+              <label className="flex items-center justify-between gap-3 rounded-xl border border-border px-4 py-3 text-sm text-foreground">
+                Esgotado
+                <input className="h-5 w-5" type="checkbox" checked={draft.sold_out} onChange={(e) => setDraft({ ...draft, sold_out: e.target.checked })} />
+              </label>
+            </div>
+
+            <div className="mt-5 flex flex-col gap-3 sm:flex-row">
+              <button type="submit" disabled={saving} className="rounded-full bg-ink px-6 py-3.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-background transition-colors hover:bg-gold disabled:opacity-60">
+                {saving ? "Salvando..." : draft.id ? "Salvar alterações" : "Adicionar produto"}
               </button>
-            )}
-          </div>
-          {msg && <p className="mt-4 text-[12px] text-muted-foreground">{msg}</p>}
-        </form>
+              {draft.id && (
+                <button type="button" onClick={() => { setDraft(emptyDraft); setFile(null); }} className="rounded-full border border-border px-6 py-3.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-foreground">
+                  Cancelar edição
+                </button>
+              )}
+            </div>
+            {msg && <p className="mt-4 text-[12px] text-muted-foreground">{msg}</p>}
+          </form>
+        )}
 
-        <section className="mt-10">
-          <p className="text-[11px] uppercase tracking-[0.18em] text-muted-foreground">{rows.length} produtos</p>
-          <div className="mt-4 grid gap-3">
-            {rows.map((row) => (
-              <article key={row.id} className="flex items-center gap-4 rounded-2xl border border-border bg-card p-4">
-                <div className="h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-sand">
-                  {row.image_path && urls[row.image_path] && (
-                    <img src={urls[row.image_path]} alt={row.name} className="h-full w-full object-cover" loading="lazy" />
-                  )}
+        <section className="mt-8">
+          <input
+            className={field}
+            placeholder="Buscar por nome ou marca"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+
+          <div className="-mx-4 mt-3 flex gap-2 overflow-x-auto px-4 pb-1 [scrollbar-width:none] sm:mx-0 sm:px-0">
+            {filterGroups.map((group) => (
+              <button key={group.id} type="button" onClick={() => setFilter(group.id)} className={pill(filter === group.id)}>
+                {group.label}
+              </button>
+            ))}
+          </div>
+
+          {activeGroup?.children && (
+            <div className="-mx-4 mt-2 flex gap-2 overflow-x-auto px-4 pb-1 [scrollbar-width:none] sm:mx-0 sm:px-0">
+              {activeGroup.children.map((child) => (
+                <button key={child.id} type="button" onClick={() => setFilter(child.id)} className={pill(filter === child.id)}>
+                  {child.label}
+                </button>
+              ))}
+            </div>
+          )}
+
+          <p className="mt-4 text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
+            {visibleRows.length} de {rows.length} produtos
+          </p>
+
+          <div className="mt-3 grid gap-3">
+            {visibleRows.map((row) => (
+              <article key={row.id} className="rounded-2xl border border-border bg-card p-3 sm:p-4">
+                <div className="flex gap-3">
+                  <div className="h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-sand sm:h-20 sm:w-20">
+                    {row.image_path && urls[row.image_path] && (
+                      <img src={urls[row.image_path]} alt={row.name} className="h-full w-full object-cover" loading="lazy" />
+                    )}
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate text-sm font-semibold text-foreground">{row.name}</p>
+                    <p className="truncate text-[12px] text-muted-foreground">
+                      {row.brand} · {categoryLabel[row.category as Category] ?? row.category}
+                      {row.gender ? ` · ${row.gender}` : ""}
+                      {row.climate ? ` · ${climateLabel[row.climate as Climate] ?? row.climate}` : ""}
+                    </p>
+                    <div className="mt-1.5 flex flex-wrap gap-1.5">
+                      <span className={`rounded-full px-2 py-0.5 text-[9px] uppercase tracking-[0.12em] ${row.published ? "bg-gold/15 text-foreground" : "bg-muted text-muted-foreground"}`}>
+                        {row.published ? "Publicado" : "Arquivado"}
+                      </span>
+                      {row.sold_out && (
+                        <span className="rounded-full bg-ink px-2 py-0.5 text-[9px] uppercase tracking-[0.12em] text-background">
+                          Esgotado
+                        </span>
+                      )}
+                    </div>
+                  </div>
                 </div>
-                <div className="min-w-0 flex-1">
-                  <p className="truncate text-sm font-semibold text-foreground">{row.name}</p>
-                  <p className="truncate text-[12px] text-muted-foreground">
-                    {row.brand} · {categoryLabel[row.category as Category] ?? row.category}
-                    {row.gender ? ` · ${row.gender}` : ""}
-                    {row.climate ? ` · ${climateLabel[row.climate as Climate] ?? row.climate}` : ""}
-                  </p>
-                  <p className={`mt-1 text-[10px] uppercase tracking-[0.14em] ${row.published ? "text-gold" : "text-muted-foreground"}`}>
-                    {row.published ? "Publicado" : "Arquivado"}
-                  </p>
-                </div>
-                <div className="flex shrink-0 gap-2">
-                  <button type="button" onClick={() => togglePublished(row)} className={`rounded-full border px-3 py-1.5 text-[10px] uppercase tracking-[0.12em] ${row.published ? "border-gold text-foreground" : "border-border text-muted-foreground"}`}>
+
+                <div className="mt-3 grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
+                  <button type="button" onClick={() => edit(row)} className="rounded-full border border-border px-3 py-2.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-foreground">
+                    Editar
+                  </button>
+                  <button type="button" onClick={() => toggleSoldOut(row)} className={`rounded-full border px-3 py-2.5 text-[10px] font-semibold uppercase tracking-[0.12em] ${row.sold_out ? "border-ink bg-ink text-background" : "border-border text-foreground"}`}>
+                    {row.sold_out ? "Repor estoque" : "Esgotado"}
+                  </button>
+                  <button type="button" onClick={() => togglePublished(row)} className={`rounded-full border px-3 py-2.5 text-[10px] font-semibold uppercase tracking-[0.12em] ${row.published ? "border-gold text-foreground" : "border-border text-muted-foreground"}`}>
                     {row.published ? "Arquivar" : "Publicar"}
                   </button>
-                  <button type="button" onClick={() => edit(row)} className="rounded-full border border-border px-3 py-1.5 text-[10px] uppercase tracking-[0.12em] text-foreground">Editar</button>
-                  <button type="button" onClick={() => remove(row)} className="rounded-full border border-border px-3 py-1.5 text-[10px] uppercase tracking-[0.12em] text-muted-foreground hover:text-foreground">Excluir</button>
+                  <button type="button" onClick={() => remove(row)} className="rounded-full border border-border px-3 py-2.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
+                    Excluir
+                  </button>
                 </div>
               </article>
             ))}
           </div>
         </section>
       </div>
+
+      {!formOpen && (
+        <button
+          type="button"
+          onClick={() => { setDraft(emptyDraft); setFile(null); setFormOpen(true); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+          className="fixed bottom-5 right-5 z-40 rounded-full bg-ink px-6 py-4 text-[11px] font-semibold uppercase tracking-[0.14em] text-background shadow-lift sm:hidden"
+        >
+          + Produto
+        </button>
+      )}
     </div>
   );
 }
