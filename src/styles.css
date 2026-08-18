@@ -129,7 +129,7 @@
 }
 
 @utility marquee-track {
-  animation: marquee-scroll 42s linear infinite;
+  animation: marquee-scroll 65s linear infinite;
 }
 
 @utility gold-sheen {
