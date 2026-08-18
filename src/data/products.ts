@@ -77,9 +77,9 @@ export const filterGroups: FilterGroup[] = [
     ],
   },
   { id: "cremes", label: "Cremes" },
-  { id: "eletronicos", label: "Eletrônicos" },
-  { id: "kits", label: "Kits" },
   { id: "colecoes", label: "Coleções" },
+  { id: "kits", label: "Kits" },
+  { id: "eletronicos", label: "Eletrônicos" },
   { id: "diversos", label: "Diversos" },
 ];
 
