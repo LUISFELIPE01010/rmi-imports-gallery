@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Snowflake, Sun, SunSnow } from "lucide-react";
-import { categoryLabel, climateLabel, type Climate, type Product, whatsappLink } from "@/data/products";
+import { categoryLabel, climateLabel, formatPrice, type Climate, type Product, whatsappLink } from "@/data/products";
 
 const climateIcon: Record<Climate, typeof Sun> = {
   calor: Sun,
