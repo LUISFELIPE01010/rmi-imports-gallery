@@ -18,6 +18,7 @@ export interface ProductRow {
   sort_order: number;
   published: boolean;
   sold_out: boolean;
+  price: number | string | null;
 }
 
 const SIGNED_TTL = 60 * 60 * 24 * 7; // 7 dias
@@ -43,6 +44,7 @@ export function rowToProduct(row: ProductRow, imageUrl: string): Product {
     description: row.description,
     image: imageUrl,
     category: row.category as Category,
+    price: Number(row.price ?? 0),
   };
   if (row.gender) product.gender = row.gender as Gender;
   if (row.climate) product.climate = row.climate as Climate;

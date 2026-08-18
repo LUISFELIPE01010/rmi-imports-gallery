@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Snowflake, Sun, SunSnow } from "lucide-react";
-import { categoryLabel, climateLabel, type Climate, type Product, whatsappLink } from "@/data/products";
+import { categoryLabel, climateLabel, formatPrice, type Climate, type Product, whatsappLink } from "@/data/products";
 
 const climateIcon: Record<Climate, typeof Sun> = {
   calor: Sun,
@@ -96,6 +96,12 @@ export function ProductCard({ product, index }: { product: Product; index: numbe
         <p className="text-[11px] leading-relaxed text-muted-foreground sm:text-[12px] lg:text-[13px]">
           {product.description}
         </p>
+
+        {typeof product.price === "number" && (
+          <p className="font-display text-base font-bold tracking-tight text-foreground sm:text-lg">
+            {formatPrice(product.price)}
+          </p>
+        )}
 
         {product.climate && (
           <div className="flex flex-wrap gap-1.5 sm:gap-2">

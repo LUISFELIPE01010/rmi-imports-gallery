@@ -6,6 +6,7 @@ import {
   categoryLabel,
   climateLabel,
   filterGroups,
+  formatPrice,
   type Category,
   type Climate,
   type FilterId,
@@ -53,6 +54,7 @@ type Draft = {
   sort_order: number;
   published: boolean;
   sold_out: boolean;
+  price: string;
   image_path: string | null;
 };
 
@@ -69,6 +71,7 @@ const emptyDraft: Draft = {
   sort_order: 0,
   published: true,
   sold_out: false,
+  price: "0",
   image_path: null,
 };
 
@@ -158,6 +161,7 @@ function AdminPage() {
         sort_order: Number(draft.sort_order) || 0,
         published: draft.published,
         sold_out: draft.sold_out,
+        price: Number(String(draft.price).replace(",", ".")) || 0,
         image_path: imagePath,
       };
 
@@ -196,6 +200,7 @@ function AdminPage() {
       sort_order: row.sort_order,
       published: row.published,
       sold_out: row.sold_out ?? false,
+      price: String(row.price ?? 0),
       image_path: row.image_path,
     });
     setFile(null);
@@ -316,6 +321,7 @@ function AdminPage() {
                   <option key={c} value={c}>{climateLabel[c]}</option>
                 ))}
               </select>
+              <input className={field} type="number" step="0.01" min="0" placeholder="Preço (R$)" value={draft.price} onChange={(e) => setDraft({ ...draft, price: e.target.value })} />
               <input className={field} type="number" placeholder="Ordem" value={draft.sort_order} onChange={(e) => setDraft({ ...draft, sort_order: Number(e.target.value) })} />
               <textarea className={`${field} sm:col-span-2`} rows={2} placeholder="Descrição curta" value={draft.description} onChange={(e) => setDraft({ ...draft, description: e.target.value })} />
               <input className={field} placeholder="Notas de topo" value={draft.note_top} onChange={(e) => setDraft({ ...draft, note_top: e.target.value })} />
@@ -393,6 +399,7 @@ function AdminPage() {
                       {row.gender ? ` · ${row.gender}` : ""}
                       {row.climate ? ` · ${climateLabel[row.climate as Climate] ?? row.climate}` : ""}
                     </p>
+                    <p className="mt-0.5 text-[12px] font-semibold text-foreground">{formatPrice(Number(row.price ?? 0))}</p>
                     <div className="mt-1.5 flex flex-wrap gap-1.5">
                       <span className={`rounded-full px-2 py-0.5 text-[9px] uppercase tracking-[0.12em] ${row.published ? "bg-gold/15 text-foreground" : "bg-muted text-muted-foreground"}`}>
                         {row.published ? "Publicado" : "Arquivado"}

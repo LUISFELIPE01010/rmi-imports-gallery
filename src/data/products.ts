@@ -46,7 +46,11 @@ export interface Product {
   notes?: FragranceNotes;
   climate?: Climate;
   soldOut?: boolean;
+  price?: number;
 }
+
+export const formatPrice = (value: number) =>
+  new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(value);
 
 export interface FilterGroup {
   id: FilterId;
