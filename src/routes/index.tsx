@@ -38,33 +38,38 @@ export const Route = createFileRoute("/")({
 const feedbacks = [
   {
     text: "Produto original, lacrado e chegou antes do prazo. Atendimento nota 10 pelo WhatsApp.",
-    author: "Camila R.",
+    author: "Luis Felipe",
     city: "Santos, SP",
   },
   {
     text: "Já é minha terceira compra. Sempre encontram o importado que eu procuro.",
-    author: "Rodrigo M.",
+    author: "William Rezende",
     city: "Cubatão, SP",
   },
   {
     text: "Perfume idêntico ao que comprei fora do país, e por um preço bem melhor.",
-    author: "Aline F.",
+    author: "Felipe Mendes",
     city: "São Vicente, SP",
   },
   {
     text: "Entrega super rápida na Baixada Santista. Compro sempre que preciso de presente.",
-    author: "Bruna T.",
+    author: "Kawan Martins",
     city: "Santos, SP",
   },
   {
     text: "Atendimento personalizado e produtos de qualidade. Recomendo demais.",
-    author: "Felipe S.",
+    author: "Carol Franck",
     city: "Cubatão, SP",
   },
   {
     text: "Melhor custo-benefício de importados na região. Confio de olhos fechados.",
-    author: "Juliana M.",
+    author: "Thiago Brito",
     city: "São Vicente, SP",
+  },
+  {
+    text: "Excelente variedade e preços justos. Compro sempre que posso na RMI Imports.",
+    author: "Cassio Guilherme",
+    city: "Santos, SP",
   },
 ];
 
