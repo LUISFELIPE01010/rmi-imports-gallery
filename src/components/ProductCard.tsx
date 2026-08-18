@@ -56,11 +56,15 @@ export function ProductCard({ product, index }: { product: Product; index: numbe
         <img
           src={product.image}
           alt={product.name}
-          loading="lazy"
+          loading={index < 4 ? "eager" : "lazy"}
+          decoding="async"
+          fetchPriority={index < 4 ? "high" : "low"}
+          sizes="(max-width: 768px) 45vw, 300px"
           width={768}
           height={768}
           className="h-44 w-auto object-contain transition-transform duration-700 ease-out group-hover:scale-110"
         />
+
       </div>
 
       <div className="flex flex-1 flex-col gap-3 px-6 pb-6 pt-4">
