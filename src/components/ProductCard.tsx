@@ -115,10 +115,14 @@ export function ProductCard({ product, index }: { product: Product; index: numbe
           href={whatsappLink(product)}
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-auto inline-flex items-center justify-center gap-1.5 rounded-full border border-ink bg-ink px-3 py-2 text-[9px] font-semibold uppercase tracking-[0.14em] text-background transition-all duration-300 hover:border-gold hover:bg-gold hover:text-ink sm:gap-2 sm:px-4 sm:py-2.5 sm:text-[10px] sm:tracking-[0.16em] lg:py-3"
+          className={`mt-auto inline-flex items-center justify-center gap-1.5 rounded-full border px-3 py-2 text-[9px] font-semibold uppercase tracking-[0.14em] transition-all duration-300 sm:gap-2 sm:px-4 sm:py-2.5 sm:text-[10px] sm:tracking-[0.16em] lg:py-3 ${
+            product.soldOut
+              ? "border-border bg-transparent text-muted-foreground hover:border-ink hover:text-foreground"
+              : "border-ink bg-ink text-background hover:border-gold hover:bg-gold hover:text-ink"
+          }`}
         >
           <WhatsAppIcon />
-          Consultar
+          {product.soldOut ? "Avise-me" : "Consultar"}
         </a>
       </div>
     </article>
