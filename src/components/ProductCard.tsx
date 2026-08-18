@@ -13,9 +13,9 @@ function ClimateBadge({ climate }: { climate: Climate }) {
   return (
     <span
       title={`Indicado para ${climateLabel[climate].toLowerCase()}`}
-      className="inline-flex items-center gap-1.5 rounded-full border border-gold/40 bg-gold/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-foreground"
+      className="inline-flex items-center gap-1 rounded-full border border-gold/40 bg-gold/10 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.1em] text-foreground sm:gap-1.5 sm:px-2.5 sm:py-1 sm:text-[10px] sm:tracking-[0.12em]"
     >
-      <Icon className="h-3.5 w-3.5 text-gold" strokeWidth={1.8} aria-hidden="true" />
+      <Icon className="h-3 w-3 text-gold sm:h-3.5 sm:w-3.5" strokeWidth={1.8} aria-hidden="true" />
       {climateLabel[climate]}
     </span>
   );
