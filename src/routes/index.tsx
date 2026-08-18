@@ -37,17 +37,32 @@ const feedbacks = [
   {
     text: "Produto original, lacrado e chegou antes do prazo. Atendimento nota 10 pelo WhatsApp.",
     author: "Camila R.",
-    city: "São Paulo, SP",
+    city: "Santos, SP",
   },
   {
     text: "Já é minha terceira compra. Sempre encontram o importado que eu procuro.",
     author: "Rodrigo M.",
-    city: "Santos, SP",
+    city: "Cubatão, SP",
   },
   {
     text: "Perfume idêntico ao que comprei fora do país, e por um preço bem melhor.",
     author: "Aline F.",
-    city: "Curitiba, PR",
+    city: "São Vicente, SP",
+  },
+  {
+    text: "Entrega super rápida na Baixada Santista. Compro sempre que preciso de presente.",
+    author: "Bruna T.",
+    city: "Santos, SP",
+  },
+  {
+    text: "Atendimento personalizado e produtos de qualidade. Recomendo demais.",
+    author: "Felipe S.",
+    city: "Cubatão, SP",
+  },
+  {
+    text: "Melhor custo-benefício de importados na região. Confio de olhos fechados.",
+    author: "Juliana M.",
+    city: "São Vicente, SP",
   },
 ];
 
