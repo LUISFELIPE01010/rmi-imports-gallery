@@ -1,8 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { Search, X } from "lucide-react";
 import { SiteHeader } from "@/components/SiteHeader";
 import { Hero } from "@/components/Hero";
 import { SiteFooter } from "@/components/SiteFooter";
+import { ScrollCue } from "@/components/ScrollCue";
 import { ProductCard } from "@/components/ProductCard";
 import {
   filterGroups,
@@ -16,6 +18,7 @@ import { fetchPublishedProducts } from "@/lib/catalog";
 
 export const Route = createFileRoute("/")({
   head: () => ({
+    links: [{ rel: "canonical", href: "/" }],
     meta: [
       { title: "RMI Imports · Loja de Importados" },
       {
@@ -29,11 +32,27 @@ export const Route = createFileRoute("/")({
         content: "Perfumes, bodysplash, cremes e eletrônicos importados com exclusividade.",
       },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "/" },
       { name: "twitter:card", content: "summary_large_image" },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Store",
+          name: "RMI Imports",
+          description:
+            "Loja de importados: perfumes, bodysplash, cremes, eletrônicos e kits.",
+          areaServed: "Baixada Santista, SP",
+          sameAs: ["https://www.instagram.com/rmi.imports/"],
+        }),
+      },
     ],
   }),
   component: Index,
 });
+
 
 const feedbacks = [
   {
@@ -77,6 +96,7 @@ function Index() {
   const [active, setActive] = useState<FilterId>("all");
   const [remote, setRemote] = useState<Product[] | null>(null);
   const [loading, setLoading] = useState(true);
+  const [query, setQuery] = useState("");
 
   useEffect(() => {
     let alive = true;
@@ -107,7 +127,15 @@ function Index() {
   const parent = active.split("-")[0] as FilterId;
   const activeGroup = filterGroups.find((g) => g.id === parent);
   const catalog = remote ?? products;
-  const visible = catalog.filter((p) => matchesFilter(p, active));
+
+  const visible = useMemo(() => {
+    const term = query.trim().toLowerCase();
+    return catalog.filter((p) => {
+      if (!matchesFilter(p, active)) return false;
+      if (!term) return true;
+      return `${p.brand} ${p.name} ${p.description}`.toLowerCase().includes(term);
+    });
+  }, [catalog, active, query]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -117,7 +145,34 @@ function Index() {
 
         {/* Filtros + catálogo */}
         <div className="sticky top-[72px] z-40 border-y border-border bg-background/90 backdrop-blur-xl">
+          <div className="mx-auto flex max-w-7xl items-center gap-3 px-5 pt-3 sm:px-8">
+            <label className="relative flex w-full items-center">
+              <Search
+                className="pointer-events-none absolute left-3.5 h-4 w-4 text-muted-foreground"
+                strokeWidth={1.6}
+              />
+              <span className="sr-only">Buscar produtos</span>
+              <input
+                type="search"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Buscar por marca, produto..."
+                className="h-10 w-full rounded-full border border-border bg-card pl-10 pr-9 text-[13px] text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-gold"
+              />
+              {query && (
+                <button
+                  type="button"
+                  aria-label="Limpar busca"
+                  onClick={() => setQuery("")}
+                  className="absolute right-3 text-muted-foreground transition-colors hover:text-foreground"
+                >
+                  <X className="h-4 w-4" strokeWidth={1.8} />
+                </button>
+              )}
+            </label>
+          </div>
           <div className="mx-auto max-w-7xl overflow-x-auto px-5 py-3.5 sm:px-8 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+
             <div className="flex w-max gap-2">
               {filterGroups.map((f) => (
                 <button
@@ -200,8 +255,11 @@ function Index() {
             </div>
           ) : visible.length === 0 ? (
             <p className="rounded-3xl border border-dashed border-border bg-card px-6 py-16 text-center text-sm text-muted-foreground">
-              Nenhum produto disponível nesta categoria no momento.
+              {query.trim()
+                ? `Nenhum resultado para “${query.trim()}”.`
+                : "Nenhum produto disponível nesta categoria no momento."}
             </p>
+
           ) : (
             <div
               className={`grid grid-cols-2 items-start gap-3 transition-opacity duration-200 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:gap-5 ${
@@ -278,6 +336,8 @@ function Index() {
         </section>
       </main>
       <SiteFooter />
+      <ScrollCue />
     </div>
+
   );
 }
