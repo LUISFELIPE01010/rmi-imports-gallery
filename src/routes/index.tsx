@@ -96,6 +96,7 @@ function Index() {
   const [active, setActive] = useState<FilterId>("all");
   const [remote, setRemote] = useState<Product[] | null>(null);
   const [loading, setLoading] = useState(true);
+  const [query, setQuery] = useState("");
 
   useEffect(() => {
     let alive = true;
@@ -126,7 +127,15 @@ function Index() {
   const parent = active.split("-")[0] as FilterId;
   const activeGroup = filterGroups.find((g) => g.id === parent);
   const catalog = remote ?? products;
-  const visible = catalog.filter((p) => matchesFilter(p, active));
+
+  const visible = useMemo(() => {
+    const term = query.trim().toLowerCase();
+    return catalog.filter((p) => {
+      if (!matchesFilter(p, active)) return false;
+      if (!term) return true;
+      return `${p.brand} ${p.name} ${p.description}`.toLowerCase().includes(term);
+    });
+  }, [catalog, active, query]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -136,7 +145,34 @@ function Index() {
 
         {/* Filtros + catálogo */}
         <div className="sticky top-[72px] z-40 border-y border-border bg-background/90 backdrop-blur-xl">
+          <div className="mx-auto flex max-w-7xl items-center gap-3 px-5 pt-3 sm:px-8">
+            <label className="relative flex w-full items-center">
+              <Search
+                className="pointer-events-none absolute left-3.5 h-4 w-4 text-muted-foreground"
+                strokeWidth={1.6}
+              />
+              <span className="sr-only">Buscar produtos</span>
+              <input
+                type="search"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Buscar por marca, produto..."
+                className="h-10 w-full rounded-full border border-border bg-card pl-10 pr-9 text-[13px] text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-gold"
+              />
+              {query && (
+                <button
+                  type="button"
+                  aria-label="Limpar busca"
+                  onClick={() => setQuery("")}
+                  className="absolute right-3 text-muted-foreground transition-colors hover:text-foreground"
+                >
+                  <X className="h-4 w-4" strokeWidth={1.8} />
+                </button>
+              )}
+            </label>
+          </div>
           <div className="mx-auto max-w-7xl overflow-x-auto px-5 py-3.5 sm:px-8 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+
             <div className="flex w-max gap-2">
               {filterGroups.map((f) => (
                 <button
