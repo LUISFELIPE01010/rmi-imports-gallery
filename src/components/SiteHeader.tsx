@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { WHATSAPP_NUMBER } from "@/data/products";
+import logoAsset from "@/assets/logo.png.asset.json";
 
 const links = [
   { href: "#catalogo", label: "Catálogo" },
@@ -26,11 +27,12 @@ export function SiteHeader() {
       }`}
     >
       <div className="mx-auto flex h-[72px] max-w-7xl items-center justify-between px-5 sm:px-8">
-        <a href="#top" className="group flex flex-col leading-none">
-          <span className="font-display text-2xl font-extrabold tracking-[-0.02em] text-background">
-            RMI
-          </span>
-          <span className="eyebrow mt-0.5 text-[8px] tracking-[0.42em] text-gold">imports</span>
+        <a href="#top" className="group flex items-center">
+          <img
+            src={logoAsset.url}
+            alt="RMI Imports"
+            className="h-12 w-auto object-contain sm:h-16"
+          />
         </a>
 
         <nav className="hidden items-center gap-9 md:flex">

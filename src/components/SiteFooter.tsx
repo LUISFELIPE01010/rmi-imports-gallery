@@ -1,15 +1,17 @@
 import { INSTAGRAM_URL, WHATSAPP_NUMBER } from "@/data/products";
 import { Instagram, MessageCircle } from "lucide-react";
+import logoAsset from "@/assets/logo.png.asset.json";
 
 export function SiteFooter() {
   return (
     <footer id="contato" className="bg-ink">
       <div className="mx-auto flex max-w-7xl flex-col gap-4 px-5 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-8">
-        <div>
-          <p className="font-display text-xl font-extrabold tracking-[-0.02em] text-background">
-            RMI
-          </p>
-          <p className="eyebrow mt-0.5 text-gold">imports</p>
+        <div className="flex items-center">
+          <img
+            src={logoAsset.url}
+            alt="RMI Imports"
+            className="h-11 w-auto object-contain sm:h-14"
+          />
         </div>
 
         <div className="flex items-center gap-2">
