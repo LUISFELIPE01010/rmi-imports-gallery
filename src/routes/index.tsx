@@ -255,8 +255,11 @@ function Index() {
             </div>
           ) : visible.length === 0 ? (
             <p className="rounded-3xl border border-dashed border-border bg-card px-6 py-16 text-center text-sm text-muted-foreground">
-              Nenhum produto disponível nesta categoria no momento.
+              {query.trim()
+                ? `Nenhum resultado para “${query.trim()}”.`
+                : "Nenhum produto disponível nesta categoria no momento."}
             </p>
+
           ) : (
             <div
               className={`grid grid-cols-2 items-start gap-3 transition-opacity duration-200 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:gap-5 ${
