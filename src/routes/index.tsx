@@ -1,8 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { Search, X } from "lucide-react";
 import { SiteHeader } from "@/components/SiteHeader";
 import { Hero } from "@/components/Hero";
 import { SiteFooter } from "@/components/SiteFooter";
+import { ScrollCue } from "@/components/ScrollCue";
 import { ProductCard } from "@/components/ProductCard";
 import {
   filterGroups,
@@ -16,6 +18,7 @@ import { fetchPublishedProducts } from "@/lib/catalog";
 
 export const Route = createFileRoute("/")({
   head: () => ({
+    links: [{ rel: "canonical", href: "/" }],
     meta: [
       { title: "RMI Imports · Loja de Importados" },
       {
@@ -29,11 +32,27 @@ export const Route = createFileRoute("/")({
         content: "Perfumes, bodysplash, cremes e eletrônicos importados com exclusividade.",
       },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "/" },
       { name: "twitter:card", content: "summary_large_image" },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Store",
+          name: "RMI Imports",
+          description:
+            "Loja de importados: perfumes, bodysplash, cremes, eletrônicos e kits.",
+          areaServed: "Baixada Santista, SP",
+          sameAs: ["https://www.instagram.com/rmi.imports/"],
+        }),
+      },
     ],
   }),
   component: Index,
 });
+
 
 const feedbacks = [
   {
