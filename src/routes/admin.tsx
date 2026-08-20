@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { fetchAllProducts, isAdmin, uploadProductImage, type ProductRow } from "@/lib/catalog";
 import {
@@ -11,6 +11,24 @@ import {
   type Climate,
   type FilterId,
 } from "@/data/products";
+
+function PencilIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+    >
+      <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
+      <path d="m15 5 4 4" />
+    </svg>
+  );
+}
 
 export const Route = createFileRoute("/admin")({
   head: () => ({
@@ -98,6 +116,8 @@ function AdminPage() {
   const [filter, setFilter] = useState<FilterId>("all");
   const [search, setSearch] = useState("");
   const [formOpen, setFormOpen] = useState(false);
+  const [uploadingId, setUploadingId] = useState<string | null>(null);
+  const fileRefs = useRef<Record<string, HTMLInputElement | null>>({});
 
   const load = useCallback(async () => {
     const { rows: r, urls: u } = await fetchAllProducts();
@@ -222,6 +242,22 @@ function AdminPage() {
   const toggleSoldOut = async (row: ProductRow) => {
     await supabase.from("products").update({ sold_out: !row.sold_out }).eq("id", row.id);
     await load();
+  };
+
+  const updateImage = async (row: ProductRow, file: File) => {
+    setUploadingId(row.id);
+    setMsg(null);
+    try {
+      const imagePath = await uploadProductImage(file);
+      const { error } = await supabase.from("products").update({ image_path: imagePath }).eq("id", row.id);
+      if (error) throw error;
+      await load();
+      setMsg(`Imagem de "${row.name}" atualizada.`);
+    } catch (err) {
+      setMsg(err instanceof Error ? err.message : "Erro ao trocar imagem");
+    } finally {
+      setUploadingId(null);
+    }
   };
 
   if (status === "loading") {
@@ -387,10 +423,39 @@ function AdminPage() {
             {visibleRows.map((row) => (
               <article key={row.id} className="rounded-2xl border border-border bg-card p-3 sm:p-4">
                 <div className="flex gap-3">
-                  <div className="h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-sand sm:h-20 sm:w-20">
-                    {row.image_path && urls[row.image_path] && (
-                      <img src={urls[row.image_path]} alt={row.name} className="h-full w-full object-cover" loading="lazy" />
+                  <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-sand sm:h-20 sm:w-20">
+                    {row.image_path && urls[row.image_path] ? (
+                      <img
+                        src={urls[row.image_path]}
+                        alt={row.name}
+                        className={`h-full w-full object-cover ${uploadingId === row.id ? "opacity-50" : ""}`}
+                        loading="lazy"
+                      />
+                    ) : (
+                      <div className="flex h-full w-full items-center justify-center text-[10px] text-muted-foreground">
+                        Sem foto
+                      </div>
                     )}
+                    <button
+                      type="button"
+                      title="Trocar imagem"
+                      onClick={() => fileRefs.current[row.id]?.click()}
+                      disabled={uploadingId === row.id}
+                      className="absolute right-1 top-1 flex h-6 w-6 items-center justify-center rounded-full bg-ink/90 text-background shadow-sm backdrop-blur transition-colors hover:bg-gold disabled:opacity-50 sm:right-1.5 sm:top-1.5"
+                    >
+                      <PencilIcon className="h-3 w-3" />
+                    </button>
+                    <input
+                      ref={(el) => { fileRefs.current[row.id] = el; }}
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={(e) => {
+                        const selected = e.target.files?.[0];
+                        if (selected) updateImage(row, selected);
+                        e.target.value = "";
+                      }}
+                    />
                   </div>
                   <div className="min-w-0 flex-1">
                     <p className="truncate text-sm font-semibold text-foreground">{row.name}</p>
