@@ -336,6 +336,8 @@ function Index() {
         </section>
       </main>
       <SiteFooter />
+      <ScrollCue />
     </div>
+
   );
 }
