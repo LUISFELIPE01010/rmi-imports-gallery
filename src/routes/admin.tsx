@@ -116,6 +116,8 @@ function AdminPage() {
   const [filter, setFilter] = useState<FilterId>("all");
   const [search, setSearch] = useState("");
   const [formOpen, setFormOpen] = useState(false);
+  const [uploadingId, setUploadingId] = useState<string | null>(null);
+  const fileRefs = useRef<Record<string, HTMLInputElement | null>>({});
 
   const load = useCallback(async () => {
     const { rows: r, urls: u } = await fetchAllProducts();
