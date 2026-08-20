@@ -10,7 +10,7 @@ export function SiteFooter() {
           <img
             src={logoAsset.url}
             alt="RMI Imports"
-            className="h-14 w-auto object-contain sm:h-16"
+            className="h-11 w-auto object-contain sm:h-13"
           />
         </div>
 

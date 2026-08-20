@@ -31,7 +31,7 @@ export function SiteHeader() {
           <img
             src={logoAsset.url}
             alt="RMI Imports"
-            className="h-16 w-auto object-contain sm:h-20"
+            className="h-12 w-auto object-contain sm:h-16"
           />
         </a>
 
