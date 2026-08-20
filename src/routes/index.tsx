@@ -157,7 +157,7 @@ function Index() {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Buscar por marca, produto..."
-                className="h-10 w-full rounded-full border border-border bg-card pl-10 pr-9 text-[13px] text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-gold"
+                className="h-10 w-full rounded-full border border-border bg-card pl-10 pr-9 text-[16px] text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-gold sm:text-[13px]"
               />
               {query && (
                 <button
