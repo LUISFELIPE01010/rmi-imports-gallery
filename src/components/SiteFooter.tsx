@@ -10,6 +10,9 @@ export function SiteFooter() {
           <img
             src={logoAsset.url}
             alt="RMI Imports"
+            width={338}
+            height={200}
+            decoding="async"
             className="h-8 w-auto object-contain sm:h-10"
           />
         </div>
