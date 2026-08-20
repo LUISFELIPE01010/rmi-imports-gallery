@@ -423,10 +423,39 @@ function AdminPage() {
             {visibleRows.map((row) => (
               <article key={row.id} className="rounded-2xl border border-border bg-card p-3 sm:p-4">
                 <div className="flex gap-3">
-                  <div className="h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-sand sm:h-20 sm:w-20">
-                    {row.image_path && urls[row.image_path] && (
-                      <img src={urls[row.image_path]} alt={row.name} className="h-full w-full object-cover" loading="lazy" />
+                  <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-sand sm:h-20 sm:w-20">
+                    {row.image_path && urls[row.image_path] ? (
+                      <img
+                        src={urls[row.image_path]}
+                        alt={row.name}
+                        className={`h-full w-full object-cover ${uploadingId === row.id ? "opacity-50" : ""}`}
+                        loading="lazy"
+                      />
+                    ) : (
+                      <div className="flex h-full w-full items-center justify-center text-[10px] text-muted-foreground">
+                        Sem foto
+                      </div>
                     )}
+                    <button
+                      type="button"
+                      title="Trocar imagem"
+                      onClick={() => fileRefs.current[row.id]?.click()}
+                      disabled={uploadingId === row.id}
+                      className="absolute right-1 top-1 flex h-6 w-6 items-center justify-center rounded-full bg-ink/90 text-background shadow-sm backdrop-blur transition-colors hover:bg-gold disabled:opacity-50 sm:right-1.5 sm:top-1.5"
+                    >
+                      <PencilIcon className="h-3 w-3" />
+                    </button>
+                    <input
+                      ref={(el) => { fileRefs.current[row.id] = el; }}
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={(e) => {
+                        const selected = e.target.files?.[0];
+                        if (selected) updateImage(row, selected);
+                        e.target.value = "";
+                      }}
+                    />
                   </div>
                   <div className="min-w-0 flex-1">
                     <p className="truncate text-sm font-semibold text-foreground">{row.name}</p>
