@@ -244,6 +244,22 @@ function AdminPage() {
     await load();
   };
 
+  const updateImage = async (row: ProductRow, file: File) => {
+    setUploadingId(row.id);
+    setMsg(null);
+    try {
+      const imagePath = await uploadProductImage(file);
+      const { error } = await supabase.from("products").update({ image_path: imagePath }).eq("id", row.id);
+      if (error) throw error;
+      await load();
+      setMsg(`Imagem de "${row.name}" atualizada.`);
+    } catch (err) {
+      setMsg(err instanceof Error ? err.message : "Erro ao trocar imagem");
+    } finally {
+      setUploadingId(null);
+    }
+  };
+
   if (status === "loading") {
     return <div className="flex min-h-screen items-center justify-center text-sm text-muted-foreground">Carregando…</div>;
   }
