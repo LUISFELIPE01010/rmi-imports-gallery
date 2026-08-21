@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
-import { Search, X } from "lucide-react";
+import { Search, Truck, X } from "lucide-react";
 import { SiteHeader } from "@/components/SiteHeader";
 import { Hero } from "@/components/Hero";
 import { SiteFooter } from "@/components/SiteFooter";
@@ -142,6 +142,16 @@ function Index() {
       <SiteHeader />
       <main>
         <Hero />
+
+        {/* Faixa de entrega */}
+        <div className="border-y border-border bg-card">
+          <div className="mx-auto flex max-w-7xl items-center justify-center gap-3 px-5 py-3.5 sm:px-8 sm:py-4">
+            <Truck className="h-4 w-4 shrink-0 text-gold" strokeWidth={1.8} />
+            <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-foreground sm:text-xs">
+              Entrega para todo o Brasil · Baixada Santista em até 1 dia útil
+            </p>
+          </div>
+        </div>
 
         {/* Filtros + catálogo */}
         <div className="sticky top-[72px] z-40 border-y border-border bg-background/90 backdrop-blur-xl">
@@ -318,10 +328,14 @@ function Index() {
             <div>
               <p className="eyebrow text-gold">Fale com a gente</p>
               <h2 className="display-serif mt-4 text-[clamp(2rem,4.5vw,3.2rem)] text-background">
-                Procurando algo específico?
+              Procurando algo específico?
               </h2>
               <p className="mt-4 max-w-md text-sm leading-relaxed text-background/60">
                 Perfumes, bodysplash, cremes ou eletrônicos: consulte disponibilidade pelo WhatsApp.
+              </p>
+              <p className="mt-3 flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.12em] text-gold">
+                <Truck className="h-3.5 w-3.5" strokeWidth={1.8} />
+                Entregamos para todo o Brasil
               </p>
             </div>
             <a
