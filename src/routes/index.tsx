@@ -288,7 +288,7 @@ function Index() {
           <div className="mx-auto max-w-7xl px-5 pb-8 pt-14 sm:px-8">
             <p className="eyebrow text-gold">Quem já comprou</p>
             <h2 className="display-serif mt-4 text-[clamp(1.6rem,3.5vw,2.4rem)] text-foreground">
-              Clientes da Baixada Santista
+              Feedbacks de clientes
             </h2>
           </div>
 
