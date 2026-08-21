@@ -143,6 +143,16 @@ function Index() {
       <main>
         <Hero />
 
+        {/* Faixa de entrega */}
+        <div className="border-y border-border bg-card">
+          <div className="mx-auto flex max-w-7xl items-center justify-center gap-3 px-5 py-3.5 sm:px-8 sm:py-4">
+            <Truck className="h-4 w-4 shrink-0 text-gold" strokeWidth={1.8} />
+            <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-foreground sm:text-xs">
+              Entrega para todo o Brasil · Baixada Santista em até 1 dia útil
+            </p>
+          </div>
+        </div>
+
         {/* Filtros + catálogo */}
         <div className="sticky top-[72px] z-40 border-y border-border bg-background/90 backdrop-blur-xl">
           <div className="mx-auto flex max-w-7xl items-center gap-3 px-5 pt-3 sm:px-8">
