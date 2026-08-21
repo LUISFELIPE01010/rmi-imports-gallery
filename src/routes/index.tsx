@@ -56,39 +56,39 @@ export const Route = createFileRoute("/")({
 
 const feedbacks = [
   {
-    text: "Produto original, lacrado e chegou antes do prazo. Atendimento nota 10 pelo WhatsApp.",
-    author: "Luis Felipe",
+    text: "Comprei o Baccarat Rouge e chegou perfeito. Já é a terceira vez que peço aqui!",
+    author: "Maci Amorim",
     city: "Santos, SP",
   },
   {
-    text: "Já é minha terceira compra. Sempre encontram o importado que eu procuro.",
-    author: "William Rezende",
+    text: "Melhor custo benefício que achei em perfume importado. Produto original e entrega rápida.",
+    author: "Wilfts7",
     city: "Cubatão, SP",
   },
   {
-    text: "Perfume idêntico ao que comprei fora do país, e por um preço bem melhor.",
-    author: "Felipe Mendes",
+    text: "Atendimento nota 10 do Rafael, comprarei mais vezes",
+    author: "Caroline Vieira",
     city: "São Vicente, SP",
   },
   {
-    text: "Entrega super rápida na Baixada Santista. Compro sempre que preciso de presente.",
-    author: "Kawan Martins",
+    text: "Comprei um relógio de presente para meu pai. Muito bom!",
+    author: "Luis Ataides",
     city: "Santos, SP",
   },
   {
-    text: "Atendimento personalizado e produtos de qualidade. Recomendo demais.",
-    author: "Carol Franck",
+    text: "Já indiquei pra todo mundo. Perfumes árabes de qualidade que você não acha em qualquer lugar.",
+    author: "Dicas Ana Luisa",
+    city: "São Paulo, SP",
+  },
+  {
+    text: "O Rafael me atendeu super bem e achei o perfume certo pro meu estilo. Atendimento mt bom de verdade.",
+    author: "Silva Marcos",
     city: "Cubatão, SP",
   },
   {
-    text: "Melhor custo-benefício de importados na região. Confio de olhos fechados.",
-    author: "Thiago Brito",
+    text: "Recebi meu pedido em dois dias. Produto selado, original, sem enrolação. Recomendo demais!",
+    author: "H. Porfirio",
     city: "São Vicente, SP",
-  },
-  {
-    text: "Excelente variedade e preços justos. Compro sempre que posso na RMI Imports.",
-    author: "Cassio Guilherme",
-    city: "Santos, SP",
   },
 ];
 
