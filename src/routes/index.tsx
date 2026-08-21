@@ -328,10 +328,14 @@ function Index() {
             <div>
               <p className="eyebrow text-gold">Fale com a gente</p>
               <h2 className="display-serif mt-4 text-[clamp(2rem,4.5vw,3.2rem)] text-background">
-                Procurando algo específico?
+              Procurando algo específico?
               </h2>
               <p className="mt-4 max-w-md text-sm leading-relaxed text-background/60">
                 Perfumes, bodysplash, cremes ou eletrônicos: consulte disponibilidade pelo WhatsApp.
+              </p>
+              <p className="mt-3 flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.12em] text-gold">
+                <Truck className="h-3.5 w-3.5" strokeWidth={1.8} />
+                Entregamos para todo o Brasil
               </p>
             </div>
             <a
